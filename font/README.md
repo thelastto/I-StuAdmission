@@ -1,8 +1,10 @@
-# font
+# 管理员页面的前端部分
 
-> A Vue.js project
+## 2018.4.6
 
-## Build Setup
+框架搭建、路由跳转
+
+**Build Setup**
 
 ``` bash
 # install dependencies
