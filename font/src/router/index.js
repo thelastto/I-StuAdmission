@@ -7,6 +7,8 @@ import Feedback from 'views/Feedback/index'
 import Pano from 'views/Pano/index'
 import StuWebSite from 'views/StuWebSite/index'
 import Home from 'views/StuWebSite/Home/index'
+import ColumnSetting from 'views/StuWebSite/Home/columnSetting' 
+import SliderSetting from 'views/StuWebSite/Home/sliderSetting' 
 import AboutUs from 'views/StuWebSite/aboutUs'
 import News from 'views/StuWebSite/news'
 import Education from 'views/StuWebSite/education'
@@ -38,7 +40,7 @@ export const permissionRoutesMap=[{
     path:'/main/stuwebsite',
     name:'user',
     cn:'留学生网站管理',
-    icon:'el-icon-message',
+    icon:'el-icon-menu',
     meta:{requireRole:[1,2]},
     component:StuWebSite,
     children:[{
@@ -46,7 +48,20 @@ export const permissionRoutesMap=[{
       name:'home',
       cn:'HOME',
       meta:{requireRole:[1]},
-      component:Home
+      component:Home,
+      children:[{
+        path:'/main/stuwebsite/home/columnSetting',
+        name:'columnSetting',
+        cn:'栏目设置',
+        meta:{requireRole:[1]},
+        component:ColumnSetting
+      },{
+        path:'/main/stuwebsite/home/sliderSetting',
+        name:'sliderSetting',
+        cn:'轮播图设置',
+        meta:{requireRole:[1]},
+        component:SliderSetting
+      }]
     },{
       path:'/main/stuwebsite/aboutus',
       name:'aboutus',
@@ -78,14 +93,14 @@ export const permissionRoutesMap=[{
     path: '/main/pano',
     name: 'pano',
     cn:'一键通知',
-    icon:'el-icon-menu',
+    icon:'el-icon-message',
     component: Pano,
     meta: { requireRole: [1,2] }
   },{
     path: '/main/video',
     name: 'video',
     cn:'招生渠道管理',
-    icon:'el-icon-menu',
+    icon:'el-icon-share',
     component: Video,
     meta: { requireRole: [1,2] }
   }

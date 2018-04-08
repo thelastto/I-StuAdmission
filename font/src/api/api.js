@@ -4,6 +4,9 @@ import axios from './axios'
 // } from './interceptor'
 const apiUrl = '/api'
 axios.addInterceptor(axios)// 添加拦截
+/*
+  登录
+*/
 export const loginByPWD = params => {
   return axios.post(`${apiUrl}/user/login`, params)
 }
@@ -18,6 +21,9 @@ export const queryFeedbacks = params => {
 export const GetGithubOauth = () => {
   return axios.get(`${apiUrl}/user/oauthPath`)
 }
+/*
+  注册
+*/
 export const signUpByPWD=params=>{
   return axios.post(`${apiUrl}/user/signUp`,params)
 }
