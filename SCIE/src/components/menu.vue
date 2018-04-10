@@ -1,23 +1,33 @@
 <template>
     <div  id='menu'>
         <div class="row1 clear">
-            <div class="scielogo">
-                <h1><a href="#">SCIE</a></h1>
-            </div>  
+            <a href="#">SCIE</a>
 
             <div class="search">
                 <form id="sitesearch">
-                    <strong>Search:</strong>
-                    <input type="text" value="Search…" onfocus="this.value=(this.value=='Search Our Website…')? '' : this.value ;">
-                    <i :class="el-icon-search"></i>
+                    <span>SEARCH:</span>
+                    <input type="text" placeholder="keywords">
+                    <span><i class="el-icon-search"></i></span>
                 </form>
             </div>  
         </div>  
     
         <div class="row2">
-            <ul v-for="item in menu">
-                <li ><router-link :to='item.path'></router-link>{{item.cn}} </li>
-            </ul>
+            <el-menu :default-active="activeIndex2" class="el-menu-demo" mode="horizontal" background-color="#fff"
+            text-color="#06213F" active-text-color="#55ABDA" router="true">
+            <template v-for="item in menus" >
+                <el-menu-item :index="item.path" :key='item.name' v-if='!item.children'>
+                    {{item.cn}}
+                </el-menu-item>
+                <el-submenu :index="item.path" :key='item.name' v-if='item.children'>
+                    <template slot="title">{{item.cn}}</template>
+                    <template v-for='child in item.children' >                   
+                        <el-menu-item :index="child.path" :key='child.name' >{{child.cn}} </el-menu-item>
+                    </template>  
+            </el-submenu>
+            
+            </template>
+            </el-menu>
         </div>
     </div>
 </template>
@@ -28,42 +38,71 @@ export default {
     name:'headermenu',
     data() {
         return {
-            menu: map
+            menus:[{
+                path:'/',
+                name:'home',
+                cn:'HOME',
+            }, {
+                path:'/aboutus',
+                name:'aboutus',
+                cn:'ABOUT US',
+                children: [{
+                    path:'/aboutus/aboutSCIE',
+                    name:'aboutSCIE',
+                    cn:'ABOUT SCIE',
+                },{
+                    path:'/aboutus/contactUs',
+                    name:'contactUs',
+                    cn:'CONTACT US',
+                }]
+            },{
+                path:'/education',
+                name:'education',
+                cn:'EDUCATION',
+                children: [{
+                    path:'/education/major',
+                    name:'major',
+                    cn:'MAJOR',
+                },{
+                    path:'/education/teacher',
+                    name:'teacher',
+                    cn:'TEACHER',
+                }]
+            },{
+                path:'/news',
+                name:'news',
+                cn:'NEWS',
+            }],
+            activeIndex2: '1'
         }
+
     },
     methods: {
         
     },
-    mounted(){
-        console.log('menu'+this.menu[0])
-    }
 }
 </script>
 
 <style>
-.scielogo{
-    float: left;
+#menu{
+    margin-bottom: 20px;
 }
-.scielogo a{
+.row1 a{
+    font-size:36px;
     color: #FCFCFC;
     background-color: #06213F;
-    outline: none;
-    text-decoration: none;
 }
 .row1{
     height:100px;
-    line-height:100px;
+    line-height: 100px;
 }
 .search{
     float:right;
     line-height: 100px;
 }
-#sitesearch strong {
-    display: block;
-    float: left;
-    margin: 0;
-    padding: 7px 15px 0 0;
-    text-transform: uppercase;
+#sitesearch span {
+    padding:10px;
+    font-size:13px;
     color: #C6CDD6;
     background-color: #06213F;
 }
@@ -76,14 +115,9 @@ export default {
     line-height: 0;
 }
 .row2{
-    height: 40px;
-    line-height: 40px;
     border-radius:5px;
     background-color:white;
-}
-.rows li{
-    display:line;
-    padding:15px;
+    overflow:auto
 }
 
 </style>
