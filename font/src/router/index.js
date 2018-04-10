@@ -9,9 +9,13 @@ import StuWebSite from 'views/StuWebSite/index'
 import Home from 'views/StuWebSite/Home/index'
 import ColumnSetting from 'views/StuWebSite/Home/columnSetting' 
 import SliderSetting from 'views/StuWebSite/Home/sliderSetting' 
-import AboutUs from 'views/StuWebSite/aboutUs'
+import AboutUs from 'views/StuWebSite/AboutUs/index'
+import AboutSCIE from 'views/StuWebSite/AboutUs/aboutSCIE'
+import ContactUs from 'views/StuWebSite/AboutUs/contactUs'
 import News from 'views/StuWebSite/news'
-import Education from 'views/StuWebSite/education'
+import Education from 'views/StuWebSite/Education/index'
+import Major from 'views/StuWebSite/Education/major'
+import Teacher from 'views/StuWebSite/Education/teacher'
 import Video from 'views/Video/index'
 
 
@@ -67,13 +71,39 @@ export const permissionRoutesMap=[{
       name:'aboutus',
       cn:'ABOUT US',
       meta:{requireRole:[1]},
-      component:AboutUs
+      component:AboutUs,
+      children:[{
+        path:'/main/stuwebsite/aboutus/aboutSCIE',
+        name:'aboutSCIE',
+        cn:'ABOUT SCIE',
+        meta:{requireRole:[1]},
+        component:AboutSCIE
+      },{
+        path:'/main/stuwebsite/aboutus/contactUs',
+        name:'contactUs',
+        cn:'CONTACT US',
+        meta:{requireRole:[1]},
+        component:ContactUs
+      }]
     },{
       path:'/main/stuwebsite/education',
       name:'education',
       cn:'EDUCATION',
       meta:{requireRole:[1,2]},
-      component:Education
+      component:Education,
+      children:[{
+        path:'/main/stuwebsite/education/major',
+        name:'major',
+        cn:'MAJOR',
+        meta:{requireRole:[1]},
+        component:Major
+      },{
+        path:'/main/stuwebsite/education/teacher',
+        name:'teacher',
+        cn:'TEACHER',
+        meta:{requireRole:[1]},
+        component:Teacher
+      }]
     },{
       path:'/main/stuwebsite/news',
       name:'news',
