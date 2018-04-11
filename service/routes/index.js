@@ -5,4 +5,5 @@ module.exports = (app) => {
   app.use('/api/user', require('./user')); 
   app.use('/api/feedback', require('./feedback')); 
   app.use('/oauth', require('./oauth')); 
+  app.use('/api/aboutUs', require('./aboutUs')); 
 };
