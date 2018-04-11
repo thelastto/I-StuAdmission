@@ -11,6 +11,11 @@ import router from './router'
 import store from './store/index'
 import Cookies from 'js-cookie'
 
+import './assets/UE/ueditor.config.js'
+import './assets/UE/ueditor.all.min.js'
+import './assets/UE/ueditor.all.min.js'
+import './assets/UE/ueditor.parse.min.js'
+
 Vue.use(ElementUI)
 Vue.use(Vuex)
 // 路由检测
