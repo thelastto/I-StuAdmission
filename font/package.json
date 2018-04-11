@@ -1,8 +1,8 @@
 {
-  "name": "winghome",
+  "name": "istuadmission",
   "version": "1.0.0",
-  "description": "A Vue.js project",
-  "author": "zhongw",
+  "description": "A graduation project,based on Vue,Express and Mongodb",
+  "author": "xujiahui",
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
