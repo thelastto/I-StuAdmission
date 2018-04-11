@@ -13,6 +13,7 @@ export default {
 <style>
 /*各个浏览器统一*/
 @import url(assets/css/hack.css);
+
  #app {
  	height: 100%;
  }

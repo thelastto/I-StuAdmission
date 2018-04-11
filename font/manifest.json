@@ -379,7 +379,8 @@
         "removeFeedback",
         "queryFeedbacks",
         "GetGithubOauth",
-        "signUpByPWD"
+        "signUpByPWD",
+        "updateAboutSCIE"
       ]
     },
     "../src/router/index.js": {
