@@ -32,3 +32,14 @@ export const signUpByPWD=params=>{
 //     params: params
 //   })
 // }
+
+/*
+  修改aboutSCIE
+*/
+export const updateAboutSCIE=params=>{
+  return axios.post(`${apiUrl}/aboutUs/updateAboutSCIE`,params)
+}
+
+export const getAboutSCIE=()=>{
+  return axios.get(`${apiUrl}/aboutUs/getAboutSCIE`)
+}
