@@ -3,8 +3,8 @@
         <!-- 顶栏 -->
         <div class="statu-navbar">
             <div class="statu-navbar__user"><el-dropdown>
-  <span class="el-dropdown-link">
-    我<i class="el-icon-arrow-down el-icon--right"></i>
+  <span class="el-dropdown-link">{{username}}
+    <i class="el-icon-arrow-down el-icon--right"></i>
   </span>
   <el-dropdown-menu slot="dropdown">
     <el-dropdown-item>功能一</el-dropdown-item>
@@ -46,6 +46,7 @@ export default {
     },
     data() {
         return {
+            username: this.$store.getters.name
         }
     },
     methods: {
@@ -100,13 +101,13 @@ export default {
             width: 200px;
             flex: 0 0 200px;
             .el-menu-vertical {
-                height: 100%
+                height: 100%;
             }
         }
         &__show {
-            flex: 1;
             box-sizing: border-box;
-            padding: 20px;
+            margin: 20px;
+            width:100%;
         }
     }
 }
