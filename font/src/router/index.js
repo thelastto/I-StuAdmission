@@ -10,7 +10,10 @@ import Home from 'views/StuWebSite/Home/index'
 import ColumnSetting from 'views/StuWebSite/Home/columnSetting' 
 import SliderSetting from 'views/StuWebSite/Home/sliderSetting' 
 import AboutUs from 'views/StuWebSite/AboutUs/index'
-import AboutSCIE from 'views/StuWebSite/AboutUs/aboutSCIE'
+import AboutSCIE from 'views/StuWebSite/AboutUs/aboutSCIE/index'
+import AboutSCIEDetail from 'views/StuWebSite/AboutUs/aboutSCIE/detail'
+import AboutSCIEEdit from 'views/StuWebSite/AboutUs/aboutSCIE/edit'
+import AboutSCIEList from 'views/StuWebSite/AboutUs/aboutSCIE/list'
 import ContactUs from 'views/StuWebSite/AboutUs/contactUs'
 import News from 'views/StuWebSite/news'
 import Education from 'views/StuWebSite/Education/index'
@@ -77,7 +80,27 @@ export const permissionRoutesMap=[{
         name:'aboutSCIE',
         cn:'ABOUT SCIE',
         meta:{requireRole:[1]},
-        component:AboutSCIE
+        component:AboutSCIE,
+        redirect:'/main/stuwebsite/aboutus/aboutSCIE/list',
+        children:[{
+          path:'/main/stuwebsite/aboutus/aboutSCIE/detail',
+          name:'aboutSCIEDetail',
+          cn:'ABOUT SCIE DETAIL',
+          meta:{requireRole:[1]},
+          component:AboutSCIEDetail,
+        },{
+          path:'/main/stuwebsite/aboutus/aboutSCIE/edit',
+          name:'aboutSCIEEdit',
+          cn:'ABOUT SCIE EDIT',
+          meta:{requireRole:[1]},
+          component:AboutSCIEEdit,
+        },{
+          path:'/main/stuwebsite/aboutus/aboutSCIE/list',
+          name:'aboutSCIEList',
+          cn:'ABOUT SCIE List',
+          meta:{requireRole:[1]},
+          component:AboutSCIEList,
+        }]
       },{
         path:'/main/stuwebsite/aboutus/contactUs',
         name:'contactUs',
