@@ -1,0 +1,168 @@
+<template>
+  <div id="aboutSCIE" class="components-container">
+    <div style="margin-bottom:20px;"> 
+         <el-button type="primary" plain icon="el-icon-plus" 
+           @click="add()">新建</el-button>
+        <el-button  type="danger" plain icon="el-icon-delete" >批量删除</el-button>
+    </div>
+
+    <div style="width:100%;overflow:auto;">
+        <el-table :data="aboutSCIEs" :v-loading="loading"
+          height="500" stripe border style="width: 100%;"
+          :default-sort="{prop:'id',order:'descending'}">
+            <el-table-column type="selection">
+            </el-table-column>
+            <el-table-column label="内容" prop='scope' min-width="250">
+                <template slot-scope="scope">
+                    <span style="padding-left: 10px">{{ scope.row.content }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="创建者" min-width="80">
+                <template slot-scope="scope">
+                    <span style="padding-left: 10px">{{ scope.row.createBy }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="创建时间" min-width="180">
+                <template slot-scope="scope">
+                    <span style="padding-left: 10px">{{ scope.row.createDate }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="最后修改" min-width="80">
+                <template slot-scope="scope">
+                    <span style="padding-left: 10px">{{ scope.row.lastEditBy }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="最后修改时间" min-width="180">
+                <template slot-scope="scope">
+                    <span style="padding-left: 10px">{{ scope.row.lastEditDate }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="操作" min-width="300">
+                <template slot-scope="scope">
+                    <el-button size="small" type="info" plain 
+                        @click="detail(scope.$index, scope.row)">查看</el-button>
+                    <el-button size="small" type="primary" plain
+                        @click="handleClick(scope.$index, scope.row)">修改</el-button>
+                    <el-button size="small" type="danger" plain 
+                        @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                    <el-button size="small" type="success" plain
+                        @click="handleClick(scope.$index, scope.row)">应用</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+    
+    </div>
+
+    <div class="feedback__pagination">
+            <div class="block">
+                <el-pagination
+      :current-page="currentPage"
+      :page-sizes="[10,20,30,40]"
+      :page-size="10"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="page.total">
+    </el-pagination>
+            </div>
+        </div>
+  </div>
+  
+</template>
+<style>
+
+  .ehead{
+    margin:20px;
+    text-align:right;
+  }
+  .efloor{
+    margin:20px;
+    text-align: right;
+  }
+  .preview{
+    margin:20px;
+  }
+  .el-table .sort-caret.descending {
+    bottom: 5px;
+  }
+  .el-table .sort-caret.ascending {
+    top: 9px;
+    border-top: none;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid rgb(151, 168, 190);
+    border-left: 5px solid transparent;
+  }
+  .el-table .sort-caret {
+    color: #b4bccc;
+    overflow: hidden;
+    font-size: 15px;
+    width: 0;
+    position: absolute;
+    left: 4px;
+  }
+</style>
+<script>
+  import { getAboutSCIE } from 'api/api';
+  import {dateFormat} from 'utils/DateFormat'
+  export default {
+    data() {
+        return {
+            formInline: {
+                name: '',
+                keywords: '',
+                daterange: ''
+            },
+            currentPage:1,
+            loading: false,
+            aboutSCIEs: [],
+            filtr: {
+                name: '',
+                kyw: '',
+                bdate: '',
+                edate: '',
+                page: 1,
+                pageSize: 15
+            },
+            page: {
+                total: 0,
+                sizes: [15, 20, 25, 30],
+            }
+        }
+    },
+    mounted () {
+      this.getData();
+    },
+    methods: {
+      getData(){
+        let that = this;
+        let param = this.filtr;
+        this.loading = true;
+        getAboutSCIE({id:'',page:this.filtr.page, pageSize:this.filtr.pageSize}).then(res => {
+          console.log(res.data);
+          if (!res.data.code) {
+            that.page.total = res.data.total;
+            that.aboutSCIEs = res.data.aboutSCIEList;
+            for(let i = 0; i < that.aboutSCIEs.length; i++){
+                that.aboutSCIEs[i].createDate =  dateFormat(that.aboutSCIEs[i].createDate);
+                that.aboutSCIEs[i].lastEditDate =  dateFormat(that.aboutSCIEs[i].lastEditDate);
+                that.aboutSCIEs[i].content = that.aboutSCIEs[i].content.replace(/<[^>]+>/g,"");  
+            }
+            console.log(res.data);
+          } else {
+              this.$message({
+                type: 'error',
+                message: res.data.message
+              })
+          } 
+        })
+      },
+      detail(index, row) {
+        this.$router.push({name:'aboutSCIEDetail',params:{id:row._id}}) 
+      },
+      backToPreView(){
+        this.isEdit=false;
+      },
+      add(){
+          this.$router.push({name:'aboutSCIEEdit'}) 
+      }
+    }
+  };
+</script>
