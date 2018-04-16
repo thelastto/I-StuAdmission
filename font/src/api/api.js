@@ -39,7 +39,15 @@ export const signUpByPWD=params=>{
 export const updateAboutSCIE=params=>{
   return axios.post(`${apiUrl}/aboutUs/updateAboutSCIE`,params)
 }
-
-export const getAboutSCIE=()=>{
-  return axios.get(`${apiUrl}/aboutUs/getAboutSCIE`)
+/*
+  获取aboutSCIE列表
+*/
+export const getAboutSCIE=params=>{
+  return axios.post(`${apiUrl}/aboutUs/getAboutSCIE`,params)
+}
+/*
+  获取aboutSCIE具体内容
+*/
+export const getAboutSCIEDetail=params=>{
+  return axios.post(`${apiUrl}/aboutUs/getAboutSCIEDetail`,params)
 }
