@@ -2,7 +2,7 @@
     <div class="html__login">
         <div class="form__login--center" v-loading="isLoad">
             <div class="form__title--center">
-                ZIVEN管理系统
+                信息学院留学生招生信息管理系统
             </div>
             <div class="form__content">
                 <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="ruleForm">
@@ -21,16 +21,6 @@
             </div>
 
         </div>
-        <div class="auth__login">
-            <i class="auth__login--github" @click="loginByOathGithub"></i>
-        </div>
-        <el-dialog title="提示" :visible.sync="dialogVisible">
-            <div v-html="GitOauthHtml"></div>
-            <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-            </span>
-        </el-dialog>
     </div>
 </template>
 
@@ -92,17 +82,6 @@ export default {
         signUp(){
           this.$router.push({path:'/signUp'}) 
         },
-        loginByOathGithub() {
-            GetGithubOauth().then(res => {
-                console.log(res)
-                if (!res.data.code) {
-                    window.location.href = res.data.url
-                }
-            }).catch(err => {
-                console.log(err)
-            })
-
-        },
         resetForm(formName) {
             this.$refs[formName].resetFields();
         },
@@ -148,7 +127,7 @@ $backgroundColor:#C0C0C0;
     .form__login--center {
         position: absolute;
         width: 500px;
-        height: 350px;
+        height: 250px;
         background-color: rgba(255, 255, 255, 0.5);
         border-radius: 10px;
         padding-top: 20px;
@@ -160,58 +139,6 @@ $backgroundColor:#C0C0C0;
     }
     .form__content {
         width: 85%
-    }
-    .auth__login {
-        position: absolute;
-        width: 500px;
-        height: 43px;
-        margin: 130px auto;
-        display: flex;
-        justify-content: center;
-        &::before {
-            content: '第三方授权登录';
-            position: absolute;
-            text-align: center;
-            font-size: 14px;
-            width: 70%;
-            border-bottom: 50px solid rgba(255, 255, 255, 0.5); // border-height: 1px;
-            // background-color: black;
-            // opacity: 0.1;
-            top: -30px;
-            padding-bottom: 10px;
-            border-bottom-left-radius: 5px;
-            border-bottom-right-radius: 5px;
-            z-index: 0px;
-        }
-        i {
-            height: 40px;
-            width: 40px;
-            background-size: 100% 100%;
-            margin-left: 15px;
-            margin-right: 15px;
-            cursor: pointer;
-            opacity: 0.6;
-            z-index: 1px;
-        }
-        &--github {
-            background: url('../../assets/svg/github.svg') no-repeat;
-
-            &:hover {
-                opacity: 0.3;
-            }
-        }
-        &--qq {
-            background: url('../../assets/svg/qq.svg') no-repeat;
-            &:hover {
-                opacity: 0.3;
-            }
-        }
-        &--weibo {
-            background: url('../../assets/svg/微博.svg') no-repeat;
-            &:hover {
-                opacity: 0.3;
-            }
-        }
     }
 }
 
