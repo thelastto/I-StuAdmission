@@ -2,29 +2,38 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const StudentSchema = new Schema({
+  sNumber:{
+    type:String,
+    unique: true,
+    require: true // 不可为空约束
+  },
   name: {
     type: String,
-    unique: true, // 不可重复约束
     require: true // 不可为空约束
   },
   gender: {
     type: String,
-    require: true
   },
   major:{
-      type:Number,
+      type:String,
       require:true
   },
   class:{
     type:String,
-    required:true
   },
   email: {
     type: String
   },
   phone: {
     type: String
+  },
+  notes:{
+    type:String
+  },
+  file:{
+    type:String
   }
+
 });
 
 
