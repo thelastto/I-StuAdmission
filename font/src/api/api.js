@@ -51,3 +51,39 @@ export const getAboutSCIE=params=>{
 export const getAboutSCIEDetail=params=>{
   return axios.post(`${apiUrl}/aboutUs/getAboutSCIEDetail`,params)
 }
+/*
+  删除aboutSCIE
+*/
+export const removeAboutSCIE=params=>{
+  return axios.post(`${apiUrl}/aboutUs/removeAboutSCIE`,params)
+}
+/*
+  应用aboutSCIE
+*/
+export const applyAboutSCIE=params=>{
+  return axios.post(`${apiUrl}/aboutUs/applyAboutSCIE`,params)
+}
+/*
+  修改留学生信息
+*/
+export const updateStu=params=>{
+  return axios.post(`${apiUrl}/student/updateStu`,params)
+}
+/*
+  获取留学生列表
+*/
+export const getStuList=params=>{
+  return axios.post(`${apiUrl}/student/getStuList`,params)
+}
+/*
+  获取留学生具体信息
+*/
+export const getStuDetail=params=>{
+  return axios.post(`${apiUrl}/student/getStuDetail`,params)
+}
+/*
+  删除留学生
+*/
+export const removeStu=params=>{
+  return axios.post(`${apiUrl}/student/removeStu`,params)
+}
