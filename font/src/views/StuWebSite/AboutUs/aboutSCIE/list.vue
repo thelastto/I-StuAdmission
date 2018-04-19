@@ -2,13 +2,13 @@
   <div id="aboutSCIE" class="components-container">
     <div style="margin-bottom:20px;"> 
          <el-button type="primary" plain icon="el-icon-plus" 
-           @click="add()">新建</el-button>
+           @click="handleAdd()">新建</el-button>
         <el-button  type="danger" plain icon="el-icon-delete" >批量删除</el-button>
     </div>
 
-    <div style="width:100%;overflow:auto;">
+    <div style="width:100%;overflow:hidden;">
         <el-table :data="aboutSCIEs" :v-loading="loading"
-          height="500" stripe border style="width: 100%;"
+           stripe border style="width: 100%;"
           :default-sort="{prop:'id',order:'descending'}">
             <el-table-column type="selection">
             </el-table-column>
@@ -40,27 +40,34 @@
             <el-table-column label="操作" min-width="300">
                 <template slot-scope="scope">
                     <el-button size="small" type="info" plain 
-                        @click="detail(scope.$index, scope.row)">查看</el-button>
+                        @click="handleDetail(scope.$index, scope.row)">查看</el-button>
                     <el-button size="small" type="primary" plain
-                        @click="handleClick(scope.$index, scope.row)">修改</el-button>
-                    <el-button size="small" type="danger" plain 
+                        @click="handleUpdate(scope.$index, scope.row)">修改</el-button>
+                    <el-button size="small" type="danger" plain v-if = "!scope.row.isApply"
                         @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-                    <el-button size="small" type="success" plain
-                        @click="handleClick(scope.$index, scope.row)">应用</el-button>
+                    
+                    <el-button size="small" type="success" plain v-if = "!scope.row.isApply"
+                        @click="handleApply(scope.$index, scope.row)">应用</el-button>
+                    <el-tooltip class="item" effect="dark" content="正在应用，不可删除" placement="top" v-else >
+                      <el-button type="success" size="small"
+                        icon="el-icon-success">正在应用</el-button>
+                    </el-tooltip>
                 </template>
             </el-table-column>
         </el-table>
     
     </div>
 
-    <div class="feedback__pagination">
+    <div class="pagination">
             <div class="block">
                 <el-pagination
       :current-page="currentPage"
       :page-sizes="[10,20,30,40]"
       :page-size="10"
       layout="total, sizes, prev, pager, next, jumper"
-      :total="page.total">
+      :total="page.total"
+      @current-change="handleCurrentChange"
+      @size-change="handleSizeChange">
     </el-pagination>
             </div>
         </div>
@@ -68,7 +75,9 @@
   
 </template>
 <style>
-
+  .pagination{
+      margin:20px auto;
+  }
   .ehead{
     margin:20px;
     text-align:right;
@@ -100,7 +109,7 @@
   }
 </style>
 <script>
-  import { getAboutSCIE } from 'api/api';
+  import { getAboutSCIE,removeAboutSCIE,applyAboutSCIE } from 'api/api';
   import {dateFormat} from 'utils/DateFormat'
   export default {
     data() {
@@ -119,7 +128,7 @@
                 bdate: '',
                 edate: '',
                 page: 1,
-                pageSize: 15
+                pageSize: 10
             },
             page: {
                 total: 0,
@@ -135,6 +144,8 @@
         let that = this;
         let param = this.filtr;
         this.loading = true;
+        console.log(this.filtr.page)
+        console.log(this.filtr.pageSize);
         getAboutSCIE({id:'',page:this.filtr.page, pageSize:this.filtr.pageSize}).then(res => {
           console.log(res.data);
           if (!res.data.code) {
@@ -154,14 +165,69 @@
           } 
         })
       },
-      detail(index, row) {
+      handleDetail(index, row) {
         this.$router.push({name:'aboutSCIEDetail',params:{id:row._id}}) 
       },
-      backToPreView(){
-        this.isEdit=false;
+      handleCurrentChange(val){
+          this.filtr.page = val;
+          this.getData();
       },
-      add(){
+      handleSizeChange(val){
+          this.filtr.pageSize = val;
+          this.getData();   
+      },
+      handleAdd(){
           this.$router.push({name:'aboutSCIEEdit'}) 
+      },
+      handleUpdate(index,row){
+          this.$router.push({name:'aboutSCIEEdit',params:{id:row._id}})
+      },
+      handleDelete(index, row) {
+          let that = this;
+          this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                that.loading = true;
+                removeAboutSCIE({ id: row._id }).then(res => {
+                    this.$message({
+                        type: 'success',
+                        message: '删除成功!'
+                    });
+                    that.getData()
+                    that.loading = false
+                }).catch(() => {
+                    this.$message({
+                        type: 'error',
+                        message: '删除失败'
+                    });
+                })
+            });
+      },
+      handleApply(index, row) {
+          let that = this;
+          this.$confirm('该文件将应用于留学生网站', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                that.loading = true;
+                applyAboutSCIE({ id: row._id }).then(res => {
+                    this.$message({
+                        type: 'success',
+                        message: res.data.message
+                    });
+                    that.getData()
+                    that.loading = false
+                }).catch(() => {
+                    this.$message({
+                        type: 'error',
+                        message: res.data.message
+                    });
+                })
+            });
+
       }
     }
   };
