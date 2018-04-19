@@ -6,7 +6,6 @@
       </div>
       <div class="efloor">
         <el-button type="primary" @click="save()">保存</el-button>
-        <el-button type="success" @click="apply()">应用</el-button>
         <el-button type="info" @click="back()">返回</el-button>
       </div>
     </div>
@@ -29,12 +28,12 @@
 </style>
 <script>
   import UE from 'components/UEditor.vue';
-  import { updateAboutSCIE, getAboutSCIE } from 'api/api';
+  import { updateAboutSCIE, getAboutSCIEDetail } from 'api/api';
   export default {
     components: {UE},
     data() {
       return {
-        aboutSCIE_id:'',
+        aboutSCIE_id:this.$route.params.id,
         defaultMsg: '',
         username: this.$store.getters.name,
         config: {
@@ -42,6 +41,23 @@
           initialFrameHeight: 350
         }
       }
+    },
+    mounted(){
+      let that = this;
+      if(that.aboutSCIE_id){
+        getAboutSCIEDetail({id:that.aboutSCIE_id}).then(res => {
+          console.log(res.data);
+          if (!res.data.code) {
+            that.defaultMsg = res.data.content;
+          } else {
+              this.$message({
+                type: 'error',
+                message: res.data.message
+              })
+          } 
+        })
+      }
+      
     },
     methods: {
       save() {
