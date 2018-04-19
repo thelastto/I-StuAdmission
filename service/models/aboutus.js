@@ -23,7 +23,10 @@ const AboutusSchema = new Schema({
     require: true,
     default: Date.now 
   },
-
+  isApply:{
+    type:Boolean,
+    default:false
+  }
   
 });
 
