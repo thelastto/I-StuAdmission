@@ -4,12 +4,12 @@ var router = express.Router();
 
 import Aboutus from '../models/aboutus.js'
 /*
-  修改about SCIE
+  修改/添加about SCIE
 */
 router.post('/updateAboutSCIE',function(req,res,next){
     console.log(req.body);
      Aboutus.findOne({_id:req.body.id},function (err, aboutUs) {
-        console.log(err);
+        console.log(aboutUs);
         if(aboutUs){
             aboutUs.lastEditBy= req.body.username;
             aboutUs.lastEditDate = new Date();
@@ -54,7 +54,7 @@ router.post('/getAboutSCIE',function(req,res,next){
      Aboutus.find({name:'aboutSCIE'}).count().exec().then(count=>{
         console.log(count);
         total=count;
-         Aboutus.find({}).limit(req.body.pageSize).skip((req.body.page-1)*req.body.pageSize).exec().then(aboutSCIEList=>{
+         Aboutus.find({name:'aboutSCIE'}).sort({lastEditDate:-1}).limit(req.body.pageSize).skip((req.body.page-1)*req.body.pageSize).exec().then(aboutSCIEList=>{
              res.json({code:0,message:'success',total:total,aboutSCIEList:aboutSCIEList})
          }).catch(err=>{
              console.log(err)
@@ -71,7 +71,7 @@ router.post('/getAboutSCIE',function(req,res,next){
 router.post('/getAboutSCIEDetail',function(req,res,next){
     
      Aboutus.findOne({_id:req.body.id},function (err, aboutUs){
-        if(!doc){
+        if(!aboutUs){
             res.json({code:1,message:'查询失败'})
         }else{
             console.log(aboutUs)
@@ -83,5 +83,40 @@ router.post('/getAboutSCIEDetail',function(req,res,next){
     
    
 })
+/*
+  删除aboutSCIE
+*/
+router.post('/removeAboutSCIE',function(req,res,next){
+    
+    Aboutus.remove({_id:req.body.id},function (err){
+       if(err){
+           res.json({code:1,message:'删除失败'})
+       }else{
+           res.json({code:0,message:'删除成功'})
+       }
+    }).catch(err=>{
+        console.log(err)
+    });
+   
+  
+}),
+/*
+  应用about SCIE
+*/
+router.post('/applyAboutSCIE',function(req,res,next){
+    
+    Aboutus.update({isApply:true},{$set: {isApply: false}},{multi:true}).catch(err=>{
+        console.log(err)
 
+    });
+    Aboutus.update({_id:req.body.id},{$set: {isApply: true}},function(err,doc){
+        if(err){
+           res.json({code:1,message:'失败，请稍后再试'});
+        }else{
+           res.json({code:0,message:'操作成功'});
+        }
+    })
+   
+  
+})
 module.exports = router;
