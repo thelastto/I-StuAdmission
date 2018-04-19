@@ -3,7 +3,12 @@ import Router from 'vue-router'
 import Login from 'views/Login/Login'
 import signUp from 'views/Login/signUp'
 import Main from 'views/Main/index'
-import Feedback from 'views/Feedback/index'
+import Student from 'views/Student/index'
+import StuInfo from 'views/Student/StuInfo/index'
+import StuList from 'views/Student/StuInfo/list'
+import StuDetail from 'views/Student/StuInfo/detail'
+import StuEdit from 'views/Student/StuInfo/edit'
+import StuStatistics from 'views/Student/statistics'
 import Pano from 'views/Pano/index'
 import StuWebSite from 'views/StuWebSite/index'
 import Home from 'views/StuWebSite/Home/index'
@@ -135,12 +140,42 @@ export const permissionRoutesMap=[{
       component:News
     }]
   },{
-    path: '/main/feedback',
-    name: 'feedback',
+    path: '/main/student',
+    name: 'student',
     cn:'留学生信息管理',
     icon:'el-icon-setting',//图标显示
     meta: { requireRole: [1,2] },
-    component: Feedback
+    component: Student,
+    children:[{
+      path: '/main/student/index',
+      name: 'stuInfo',
+      cn:'留学生信息管理',
+      meta: { requireRole: [1,2] },
+      component: StuInfo,
+      redirect:'/main/student/list',
+      children:[{
+        path:'/main/student/detail',
+        name:'stuDetail',
+        meta:{requireRole:[1]},
+        component:StuDetail,
+      },{
+        path:'/main/student/edit',
+        name:'stuEdit',
+        meta:{requireRole:[1]},
+        component:StuEdit,
+      },{
+        path:'/main/student/list',
+        name:'stuList',
+        meta:{requireRole:[1]},
+        component:StuList,
+      }]
+    },{
+      path: '/main/student/statistics',
+      name: 'stuStatistics',
+      cn:'留学生数据统计',
+      meta: { requireRole: [1,2] },
+      component: StuStatistics,
+    }]
   },
   {
     path: '/main/pano',
