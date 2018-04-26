@@ -33,6 +33,8 @@ export const signUpByPWD=params=>{
 //   })
 // }
 
+
+
 /*
   修改aboutSCIE
 */
@@ -86,4 +88,16 @@ export const getStuDetail=params=>{
 */
 export const removeStu=params=>{
   return axios.post(`${apiUrl}/student/removeStu`,params)
+}
+/*
+  导出
+*/
+export const exportToExel=()=>{
+  return axios.get(`${apiUrl}/student/export`)
+}
+/*
+  批量删除留学生
+*/
+export const batchDeleteStu=params=>{
+  return axios.post(`${apiUrl}/student/batchDeleteStu`,params)
 }
