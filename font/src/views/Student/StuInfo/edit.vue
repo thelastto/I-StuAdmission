@@ -6,7 +6,8 @@
               required: true, message: '请输入学号', trigger: 'blur' 
               },{ min:10, max:10, message: '请输入10位数学号', trigger: 'blur,change' 
               }]">
-              <el-input v-model="form.sNumber"></el-input>
+              <el-input v-model="form.sNumber" v-if="!isEdit"></el-input>
+              <el-input v-model="form.sNumber" v-else disabled></el-input>
           </el-form-item>  
           <el-form-item prop="name" label="姓名" :rules="[{ 
               required: true, message: '请输入姓名', trigger: 'blur' }]">
@@ -55,6 +56,7 @@
   export default {
     data() {
       return {
+        isEdit: false,
         form: {
           sNumber: '',
           name: '',
@@ -73,6 +75,9 @@
           console.log(res.data);
           if (!res.data.code) {
             that.form = res.data.stu;
+            if(res.data.stu){
+              that.isEdit = true;
+            }
           } else {
               this.$message({
                 type: 'error',
