@@ -11,9 +11,9 @@ import StuEdit from 'views/Student/StuInfo/edit'
 import StuStatistics from 'views/Student/statistics'
 import Pano from 'views/Pano/index'
 import StuWebSite from 'views/StuWebSite/index'
-import Home from 'views/StuWebSite/Home/index'
-import ColumnSetting from 'views/StuWebSite/Home/columnSetting' 
-import SliderSetting from 'views/StuWebSite/Home/sliderSetting' 
+// import Home from 'views/StuWebSite/Home/index'
+// import ColumnSetting from 'views/StuWebSite/Home/columnSetting' 
+// import SliderSetting from 'views/StuWebSite/Home/sliderSetting' 
 import AboutUs from 'views/StuWebSite/AboutUs/index'
 import AboutSCIE from 'views/StuWebSite/AboutUs/aboutSCIE/index'
 import AboutSCIEDetail from 'views/StuWebSite/AboutUs/aboutSCIE/detail'
@@ -24,7 +24,13 @@ import News from 'views/StuWebSite/news'
 import Education from 'views/StuWebSite/Education/index'
 import Major from 'views/StuWebSite/Education/major'
 import Teacher from 'views/StuWebSite/Education/teacher'
-import Video from 'views/Video/index'
+import Channel from 'views/Channel/index'
+import Agency from 'views/Channel/agency/index'
+import AgencyList from 'views/Channel/agency/list'
+import AgencyDetail from 'views/Channel/agency/detail'
+import AgencyEdit from 'views/Channel/agency/edit'
+
+
 
 
 Vue.use(Router)
@@ -55,26 +61,28 @@ export const permissionRoutesMap=[{
     icon:'el-icon-menu',
     meta:{requireRole:[1,2]},
     component:StuWebSite,
-    children:[{
-      path:'/main/stuwebsite/home',
-      name:'home',
-      cn:'HOME',
-      meta:{requireRole:[1]},
-      component:Home,
-      children:[{
-        path:'/main/stuwebsite/home/columnSetting',
-        name:'columnSetting',
-        cn:'栏目设置',
-        meta:{requireRole:[1]},
-        component:ColumnSetting
-      },{
-        path:'/main/stuwebsite/home/sliderSetting',
-        name:'sliderSetting',
-        cn:'轮播图设置',
-        meta:{requireRole:[1]},
-        component:SliderSetting
-      }]
-    },{
+    children:[
+    //   {
+    //   path:'/main/stuwebsite/home',
+    //   name:'home',
+    //   cn:'HOME',
+    //   meta:{requireRole:[1]},
+    //   component:Home,
+    //   children:[{
+    //     path:'/main/stuwebsite/home/columnSetting',
+    //     name:'columnSetting',
+    //     cn:'栏目设置',
+    //     meta:{requireRole:[1]},
+    //     component:ColumnSetting
+    //   },{
+    //     path:'/main/stuwebsite/home/sliderSetting',
+    //     name:'sliderSetting',
+    //     cn:'轮播图设置',
+    //     meta:{requireRole:[1]},
+    //     component:SliderSetting
+    //   }]
+    // },
+    {
       path:'/main/stuwebsite/aboutus',
       name:'aboutus',
       cn:'ABOUT US',
@@ -169,13 +177,15 @@ export const permissionRoutesMap=[{
         meta:{requireRole:[1]},
         component:StuList,
       }]
-    },{
-      path: '/main/student/statistics',
-      name: 'stuStatistics',
-      cn:'留学生数据统计',
-      meta: { requireRole: [1,2] },
-      component: StuStatistics,
-    }]
+    }
+    // ,{
+    //   path: '/main/student/statistics',
+    //   name: 'stuStatistics',
+    //   cn:'留学生数据统计',
+    //   meta: { requireRole: [1,2] },
+    //   component: StuStatistics,
+    // }
+  ]
   },
   {
     path: '/main/pano',
@@ -185,15 +195,37 @@ export const permissionRoutesMap=[{
     component: Pano,
     meta: { requireRole: [1,2] }
   },{
-    path: '/main/video',
-    name: 'video',
+    path: '/main/channel',
+    name: 'channel',
     cn:'招生渠道管理',
     icon:'el-icon-share',
-    component: Video,
+    component: Channel,
+    children:[{
+      path: '/main/channel/agency',
+      name: 'agency',
+      cn:'中介管理',
+      meta: { requireRole: [1,2] },
+      component: Agency,
+      redirect:'/main/channel/agency/list',
+      children:[{
+        path:'/main/channel/agency/detail',
+        name:'agencyDetail',
+        meta:{requireRole:[1]},
+        component:AgencyDetail,
+      },{
+        path:'/main/channel/agency/edit',
+        name:'agencyEdit',
+        meta:{requireRole:[1]},
+        component:AgencyEdit,
+      },{
+        path:'/main/channel/agency/list',
+        name:'agencyList',
+        meta:{requireRole:[1]},
+        component:AgencyList,
+    }],
     meta: { requireRole: [1,2] }
-  }
-  ]
-}]
+  }]
+}]}]
 export default new Router({
   // mode: 'history',
   routes: defaultRoutesMap
