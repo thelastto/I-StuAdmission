@@ -2,20 +2,20 @@
   <div id = "stuDetail">
     <div style="width:500px;">
         <el-form ref="form" :model="form" label-width="80px" size="mini">
-          <el-form-item prop="sNumber" label="学号" >
-              <el-input v-model="form.sNumber" :disabled="true"></el-input>
+          <el-form-item prop="sNumber" label="学号：" >
+              <span>{{form.sNumber}}</span>
           </el-form-item>  
-          <el-form-item prop="name" label="姓名">
-              <el-input v-model="form.name" :disabled="true"></el-input>
+          <el-form-item prop="name" label="姓名：">
+              <span>{{form.name}}</span>
           </el-form-item>
-          <el-form-item prop="major" label="专业">
-              <el-input v-model="form.major" :disabled="true"></el-input>
+          <el-form-item prop="major" label="专业：">
+              <span>{{form.major}}</span>
           </el-form-item>
-          <el-form-item prop="email" label="邮箱">
-              <el-input v-model="form.email" :disabled="true"></el-input>
+          <el-form-item prop="email" label="邮箱：">
+              <span>{{form.email}}</span>
           </el-form-item>
-          <el-form-item prop="notes" label="备注">
-              <el-input type="textarea" v-model="form.notes" :disabled="true"></el-input>
+          <el-form-item prop="notes" label="备注：">
+              <span>{{form.notes}}</span>
           </el-form-item>
         </el-form>
     </div>
