@@ -7,11 +7,7 @@
     <i class="el-icon-arrow-down el-icon--right"></i>
   </span>
   <el-dropdown-menu slot="dropdown">
-    <el-dropdown-item>功能一</el-dropdown-item>
-    <el-dropdown-item>功能二</el-dropdown-item>
-    <el-dropdown-item>功能三</el-dropdown-item>
-    <el-dropdown-item disabled>不可点击功能四</el-dropdown-item>
-    <el-dropdown-item divided>分割线隔开功能五</el-dropdown-item>
+    <el-dropdown-item>邮箱设置</el-dropdown-item>
   </el-dropdown-menu>
 </el-dropdown></div>
             
