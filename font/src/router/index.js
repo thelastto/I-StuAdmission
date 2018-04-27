@@ -15,20 +15,27 @@ import StuWebSite from 'views/StuWebSite/index'
 // import ColumnSetting from 'views/StuWebSite/Home/columnSetting' 
 // import SliderSetting from 'views/StuWebSite/Home/sliderSetting' 
 import AboutUs from 'views/StuWebSite/AboutUs/index'
-import AboutSCIE from 'views/StuWebSite/AboutUs/aboutSCIE/index'
-import AboutSCIEDetail from 'views/StuWebSite/AboutUs/aboutSCIE/detail'
-import AboutSCIEEdit from 'views/StuWebSite/AboutUs/aboutSCIE/edit'
-import AboutSCIEList from 'views/StuWebSite/AboutUs/aboutSCIE/list'
-import ContactUs from 'views/StuWebSite/AboutUs/contactUs'
+import AboutSCIE from 'views/StuWebSite/AboutUs/AboutSCIE/index'
+import AboutSCIEDetail from 'views/StuWebSite/AboutUs/AboutSCIE/detail'
+import AboutSCIEEdit from 'views/StuWebSite/AboutUs/AboutSCIE/edit'
+import AboutSCIEList from 'views/StuWebSite/AboutUs/AboutSCIE/list'
+import ContactUs from 'views/StuWebSite/AboutUs/ContactUs/index'
+import ContactUsDetail from 'views/StuWebSite/AboutUs/ContactUs/detail'
+import ContactUsEdit from 'views/StuWebSite/AboutUs/ContactUs/edit'
+import ContactUsList from 'views/StuWebSite/AboutUs/ContactUs/list'
 import News from 'views/StuWebSite/news'
 import Education from 'views/StuWebSite/Education/index'
 import Major from 'views/StuWebSite/Education/major'
 import Teacher from 'views/StuWebSite/Education/teacher'
 import Channel from 'views/Channel/index'
-import Agency from 'views/Channel/agency/index'
-import AgencyList from 'views/Channel/agency/list'
-import AgencyDetail from 'views/Channel/agency/detail'
-import AgencyEdit from 'views/Channel/agency/edit'
+import Agency from 'views/Channel/Agency/index'
+import AgencyList from 'views/Channel/Agency/list'
+import AgencyDetail from 'views/Channel/Agency/detail'
+import AgencyEdit from 'views/Channel/Agency/edit'
+import Person from 'views/Channel/Person/index'
+import PersonList from 'views/Channel/Person/list'
+import PersonDetail from 'views/Channel/Person/detail'
+import PersonEdit from 'views/Channel/Person/edit'
 
 
 
@@ -119,7 +126,24 @@ export const permissionRoutesMap=[{
         name:'contactUs',
         cn:'CONTACT US',
         meta:{requireRole:[1]},
-        component:ContactUs
+        component:ContactUs,
+        redirect:'/main/stuwebsite/aboutus/contactUs/list',
+        children: [{
+          path:'/main/stuwebsite/aboutus/contactUs/detail',
+          name:'contactUsDetail',
+          meta:{requireRole:[1]},
+          component:ContactUsDetail,
+        },{
+          path:'/main/stuwebsite/aboutus/contactUs/edit',
+          name:'contactUsEdit',
+          meta:{requireRole:[1]},
+          component:ContactUsEdit,
+        },{
+          path:'/main/stuwebsite/aboutus/contactUs/list',
+          name:'contactUsList',
+          meta:{requireRole:[1]},
+          component:ContactUsList,
+        }]
       }]
     },{
       path:'/main/stuwebsite/education',
@@ -177,17 +201,14 @@ export const permissionRoutesMap=[{
         meta:{requireRole:[1]},
         component:StuList,
       }]
-    }
-    // ,{
-    //   path: '/main/student/statistics',
-    //   name: 'stuStatistics',
-    //   cn:'留学生数据统计',
-    //   meta: { requireRole: [1,2] },
-    //   component: StuStatistics,
-    // }
-  ]
-  },
-  {
+    },{
+      path: '/main/student/statistics',
+      name: 'stuStatistics',
+      cn:'留学生数据统计',
+      meta: { requireRole: [1,2] },
+      component: StuStatistics,
+    }]
+  },{
     path: '/main/pano',
     name: 'pano',
     cn:'一键通知',
@@ -200,6 +221,7 @@ export const permissionRoutesMap=[{
     cn:'招生渠道管理',
     icon:'el-icon-share',
     component: Channel,
+    meta: { requireRole: [1,2] },
     children:[{
       path: '/main/channel/agency',
       name: 'agency',
@@ -222,10 +244,32 @@ export const permissionRoutesMap=[{
         name:'agencyList',
         meta:{requireRole:[1]},
         component:AgencyList,
-    }],
-    meta: { requireRole: [1,2] }
+      }]
+    },{
+      path: '/main/channel/person',
+      name: 'person',
+      cn:'相关人员管理',
+      meta: { requireRole: [1,2] },
+      component: Person,
+      redirect:'/main/channel/person/list',
+      children:[{
+        path:'/main/channel/person/detail',
+        name:'personDetail',
+        meta:{requireRole:[1]},
+        component:PersonDetail,
+      },{
+        path:'/main/channel/person/edit',
+        name:'personEdit',
+        meta:{requireRole:[1]},
+        component:PersonEdit,
+      },{
+        path:'/main/channel/person/list',
+        name:'personList',
+        meta:{requireRole:[1]},
+        component:PersonList,
+      }]
   }]
-}]}]
+  }]}]
 export default new Router({
   // mode: 'history',
   routes: defaultRoutesMap
