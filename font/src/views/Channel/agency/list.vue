@@ -3,18 +3,18 @@
     <div >
         
         <div style="margin-bottom:20px;"> 
-          <el-tooltip content="添加一个新的学生信息" placement="top">
+          <el-tooltip content="添加一个新的中介" placement="top">
           <el-button type="primary" plain icon="el-icon-plus" 
             @click="handleAdd()">新建</el-button>
           </el-tooltip>
           <el-button  type="danger" plain icon="el-icon-delete" @click="handleBatchDelete">批量删除</el-button>
-          <el-button type="success" plain icon="el-icon-document"  
+          <!-- <el-button type="success" plain icon="el-icon-document"  
               @click="dialogFormVisible = true">导入</el-button>
 
           <el-dialog title="导入" :visible.sync="dialogFormVisible">
 
             <el-upload class="upload-demo" ref="upload" :on-preview="handlePreview"
-              action="/api/student/saveStuFromFile" multiple 
+              action="/api/channel/saveChannelFromFile" multiple 
               :on-remove="handleRemove" :file-list="fileList" :auto-upload="false"
               :on-success="handleSuccess"
               accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
@@ -24,8 +24,8 @@
                   注意事项：<br>
                   1.您上传的表格必须严格按照模板的格式填写，其中<span style="color:red">标红的为必填项</span><br>
                   2.不按照格式填写或没有填必填项会导致错误<br>
-                  3.若您导入的学生已经存在，则会<span style="color:red">覆盖</span>其之前的资料，导入前请仔细核对<br>
-                  4.若您还未下载模板，请先<a href="/api/download?filename=stuInfoTemplate">下载模板</a><br>
+                  3.若您导入的中介已经存在，则会<span style="color:red">覆盖</span>其之前的资料，导入前请仔细核对<br>
+                  4.若您还未下载模板，请先<a href="/api/download?filename=agencyTemplate">下载模板</a><br>
                   5.只能上传xlsx、xls格式的文件
               </div>
             </el-upload>
@@ -38,7 +38,7 @@
 
           <a href="/api/student/export" style="display:inline-block;padding-left:10px">
                 <el-button type="success" plain icon="el-icon-document">导出</el-button>
-          </a>
+          </a> -->
 
           <el-form :inline="true"
                      :model="formInline"
@@ -57,7 +57,7 @@
             
         <div class="feedback__container">
             <div class="feedback__table">
-                <el-table :data="stuList"
+                <el-table :data="channelList"
                           :v-loading="loading"
                           stripe
                           border
@@ -68,29 +68,23 @@
                                      sortable
                                      @selection-change="changeFun">
                     </el-table-column>
-                    <el-table-column label="学号"
+                    <el-table-column label="名称"
                                      prop='id'
-                                     min-width="120">
-                        <template slot-scope="scope">
-                            <el-icon name="id"></el-icon>
-                            <span style="margin-left: 10px">{{ scope.row.sNumber }}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column label="姓名" min-width="300">
-                        <template slot-scope="scope">
-                            <span style="margin-left: 10px">{{ scope.row.name}}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column label="专业"
-                                     min-width="100">
-                        <template slot-scope="scope">
-                            <span style="margin-left: 10px">{{ scope.row.major }}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column label="邮箱"
                                      min-width="200">
                         <template slot-scope="scope">
-                            <span style="margin-left: 10px">{{ scope.row.email }}</span>
+                            <el-icon name="id"></el-icon>
+                            <span style="margin-left: 10px">{{ scope.row.name }}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="联系人" min-width="150">
+                        <template slot-scope="scope">
+                            <span style="margin-left: 10px">{{ scope.row.linkman}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="联系方式"
+                                     min-width="150">
+                        <template slot-scope="scope">
+                            <span style="margin-left: 10px">{{ scope.row.phone }}</span>
                         </template>
                     </el-table-column>
                     <el-table-column label="操作"
@@ -125,7 +119,7 @@
     </div>
 </template>
 <script>
-import { getStuList, removeStu, download , exportToExel,batchDeleteStu } from 'api/api';
+import { getChannelList, removeChannel, download , exportToExel,batchDeleteChannel } from 'api/api';
 import 'common/index';
 export default {
     data() {
@@ -139,7 +133,7 @@ export default {
             },
             currentPage:1,
             loading: false,
-            stuList: [],
+            channelList: [],
             filtr: {
                 name: '',
                 kyw: '',
@@ -163,11 +157,11 @@ export default {
         let that = this;
         let param = this.filtr;
         this.loading = true;
-        getStuList({id:'',page:this.filtr.page, pageSize:this.filtr.pageSize}).then(res => {
+        getChannelList({category:'agency',page:this.filtr.page, pageSize:this.filtr.pageSize}).then(res => {
           console.log(res.data);
           if (!res.data.code) {
             that.page.total = res.data.total;
-            that.stuList = res.data.stuList;
+            that.channelList = res.data.channelList;
           } else {
               this.$message({
                 type: 'error',
@@ -177,7 +171,7 @@ export default {
         })
       },
       handleDetail(index, row) {
-        this.$router.push({name:'stuDetail',params:{id:row._id}}) 
+        this.$router.push({name:'agencyDetail',params:{id:row._id}}) 
       },
       handleCurrentChange(val){
           this.filtr.page = val;
@@ -188,20 +182,20 @@ export default {
           this.getData();   
       },
       handleAdd(){
-          this.$router.push({name:'stuEdit'}) 
+          this.$router.push({name:'agencyEdit'}) 
       },
       handleUpdate(index,row){
-          this.$router.push({name:'stuEdit',params:{id:row._id}})
+          this.$router.push({name:'agencyEdit',params:{id:row._id}})
       },
       handleDelete(index, row) {
           let that = this;
-          this.$confirm('此操作将永久删除该留学生信息, 是否继续?', '提示', {
+          this.$confirm('此操作将永久删除该中介, 是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
                 that.loading = true;
-                removeStu({ id: row._id }).then(res => {
+                removeChannel({ id: row._id }).then(res => {
                     this.$message({
                         type: 'success',
                         message: '删除成功!'
@@ -251,12 +245,12 @@ export default {
       },
       handleBatchDelete(){
           let that = this;
-          this.$confirm('确定要删除所选留学生吗?', '提示', {
+          this.$confirm('确定要删除所选中介吗?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                batchDeleteStu({stuList:that.multipleSelection}).then(res =>{
+                batchDeleteChannel({channelList:that.multipleSelection}).then(res =>{
                     if(!res.code){
                         that.$message({
                           type: 'success',
