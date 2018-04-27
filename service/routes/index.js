@@ -8,5 +8,6 @@ module.exports = (app) => {
   app.use('/oauth', require('./oauth')); 
   app.use('/api/aboutUs', require('./aboutUs')); 
   app.use('/api/student', require('./student')); 
+  app.use('/api/channel', require('./channel')); 
 
 };
