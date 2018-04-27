@@ -185,7 +185,7 @@ router.get('/export',function(req,res,next){
   
 }),
 /*
-  删除留学生
+  批量删除留学生
 */
 router.post('/batchDeleteStu',function(req,res,next){
     let stuList = req.body.stuList;
