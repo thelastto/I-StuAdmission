@@ -4,7 +4,7 @@
   </div>
 </template>
 <script>
-import { getAboutSCIEDetail } from 'api/api';
+import { getAboutUSDetail } from 'api/api';
 export default {
   data(){
       return{
@@ -14,7 +14,7 @@ export default {
   },
   mounted(){
       let that = this;
-      getAboutSCIEDetail({id:that.id}).then(res => {
+      getAboutUSDetail({id:that.id}).then(res => {
           console.log(res.data);
           if (!res.data.code) {
             that.content = res.data.content;

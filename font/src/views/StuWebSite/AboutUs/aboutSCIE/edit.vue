@@ -28,12 +28,12 @@
 </style>
 <script>
   import UE from 'components/UEditor.vue';
-  import { updateAboutSCIE, getAboutSCIEDetail } from 'api/api';
+  import { updateAboutUS, getAboutUSDetail } from 'api/api';
   export default {
     components: {UE},
     data() {
       return {
-        aboutSCIE_id:this.$route.params.id,
+        aboutUS_id:this.$route.params.id,
         defaultMsg: '',
         username: this.$store.getters.name,
         config: {
@@ -44,8 +44,8 @@
     },
     mounted(){
       let that = this;
-      if(that.aboutSCIE_id){
-        getAboutSCIEDetail({id:that.aboutSCIE_id}).then(res => {
+      if(that.aboutUS_id){
+        getAboutUSDetail({id:that.aboutUS_id}).then(res => {
           console.log(res.data);
           if (!res.data.code) {
             that.defaultMsg = res.data.content;
@@ -63,7 +63,7 @@
       save() {
         let that = this;
         let content = this.$refs.ue.getUEContent();
-        updateAboutSCIE({id:that.aboutSCIE_id,name:'aboutSCIE',content:content,username:that.username}).then(res => {
+        updateAboutUS({id:that.aboutUS_id,name:'aboutSCIE',content:content,username:that.username}).then(res => {
           if (!res.data.code) {
             this.$message({type:'success',message:res.data.message})
             this.$router.push({name:'aboutSCIEList'});

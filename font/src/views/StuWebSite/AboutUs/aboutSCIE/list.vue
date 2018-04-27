@@ -3,14 +3,15 @@
     <div style="margin-bottom:20px;"> 
          <el-button type="primary" plain icon="el-icon-plus" 
            @click="handleAdd()">新建</el-button>
-        <el-button  type="danger" plain icon="el-icon-delete" >批量删除</el-button>
+        <el-button  type="danger" plain icon="el-icon-delete" @click="handleBatchDelete">批量删除</el-button>
     </div>
 
     <div style="width:100%;overflow:hidden;">
         <el-table :data="aboutSCIEs" :v-loading="loading"
            stripe border style="width: 100%;"
-          :default-sort="{prop:'id',order:'descending'}">
-            <el-table-column type="selection">
+          :default-sort="{prop:'id'}"
+          @selection-change="changeFun">
+            <el-table-column type="selection" @selection-change="changeFun">
             </el-table-column>
             <el-table-column label="内容" prop='scope' min-width="250">
                 <template slot-scope="scope">
@@ -109,7 +110,7 @@
   }
 </style>
 <script>
-  import { getAboutSCIE,removeAboutSCIE,applyAboutSCIE } from 'api/api';
+  import { getAboutUS,removeAboutUS,applyAboutUS, batchDeleteAboutUS } from 'api/api';
   import {dateFormat} from 'utils/DateFormat'
   export default {
     data() {
@@ -133,24 +134,28 @@
             page: {
                 total: 0,
                 sizes: [15, 20, 25, 30],
-            }
+            },
+            multipleSelection:[]
         }
     },
     mounted () {
       this.getData();
     },
     methods: {
+      changeFun(val) {
+        this.multipleSelection = val;
+      },
       getData(){
         let that = this;
         let param = this.filtr;
         this.loading = true;
         console.log(this.filtr.page)
         console.log(this.filtr.pageSize);
-        getAboutSCIE({id:'',page:this.filtr.page, pageSize:this.filtr.pageSize}).then(res => {
+        getAboutUS({name:'aboutSCIE',page:this.filtr.page, pageSize:this.filtr.pageSize}).then(res => {
           console.log(res.data);
           if (!res.data.code) {
             that.page.total = res.data.total;
-            that.aboutSCIEs = res.data.aboutSCIEList;
+            that.aboutSCIEs = res.data.aboutUSList;
             for(let i = 0; i < that.aboutSCIEs.length; i++){
                 that.aboutSCIEs[i].createDate =  dateFormat(that.aboutSCIEs[i].createDate);
                 that.aboutSCIEs[i].lastEditDate =  dateFormat(that.aboutSCIEs[i].lastEditDate);
@@ -190,7 +195,7 @@
                 type: 'warning'
             }).then(() => {
                 that.loading = true;
-                removeAboutSCIE({ id: row._id }).then(res => {
+                removeAboutUS({ id: row._id }).then(res => {
                     this.$message({
                         type: 'success',
                         message: '删除成功!'
@@ -213,7 +218,7 @@
                 type: 'warning'
             }).then(() => {
                 that.loading = true;
-                applyAboutSCIE({ id: row._id }).then(res => {
+                applyAboutUS({ id: row._id }).then(res => {
                     this.$message({
                         type: 'success',
                         message: res.data.message
@@ -227,7 +232,30 @@
                     });
                 })
             });
-
+      },
+      handleBatchDelete(){
+          let that = this;
+          this.$confirm('确定要删除所选内容吗?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                batchDeleteAboutUS({aboutUSList:that.multipleSelection}).then(res =>{
+                    if(!res.code){
+                        that.$message({
+                          type: 'success',
+                          message: '删除成功'
+                        })
+                        that.getData();
+                    }else{
+                        that.$message({
+                          type: 'error',
+                          message: res.message
+                        });
+                    }
+              
+                })
+            })
       }
     }
   };
