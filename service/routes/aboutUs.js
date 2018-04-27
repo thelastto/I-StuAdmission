@@ -4,9 +4,9 @@ var router = express.Router();
 
 import Aboutus from '../models/aboutus.js'
 /*
-  修改/添加about SCIE
+  修改/添加about US
 */
-router.post('/updateAboutSCIE',function(req,res,next){
+router.post('/updateAboutUS',function(req,res,next){
     console.log(req.body);
      Aboutus.findOne({_id:req.body.id},function (err, aboutUs) {
         console.log(aboutUs);
@@ -47,15 +47,15 @@ router.post('/updateAboutSCIE',function(req,res,next){
 })
 
 /*
-  获取about SCIE
+  获取about US
 */
-router.post('/getAboutSCIE',function(req,res,next){
+router.post('/getAboutUS',function(req,res,next){
     let total = 0;
-     Aboutus.find({name:'aboutSCIE'}).count().exec().then(count=>{
+     Aboutus.find({name:req.body.name}).count().exec().then(count=>{
         console.log(count);
         total=count;
-         Aboutus.find({name:'aboutSCIE'}).sort({lastEditDate:-1}).limit(req.body.pageSize).skip((req.body.page-1)*req.body.pageSize).exec().then(aboutSCIEList=>{
-             res.json({code:0,message:'success',total:total,aboutSCIEList:aboutSCIEList})
+         Aboutus.find({name:req.body.name}).sort({lastEditDate:-1}).limit(req.body.pageSize).skip((req.body.page-1)*req.body.pageSize).exec().then(aboutUSList=>{
+             res.json({code:0,message:'success',total:total,aboutUSList:aboutUSList})
          }).catch(err=>{
              console.log(err)
          })
@@ -68,7 +68,7 @@ router.post('/getAboutSCIE',function(req,res,next){
 /*
   获取about SCIE的具体内容
 */
-router.post('/getAboutSCIEDetail',function(req,res,next){
+router.post('/getAboutUSDetail',function(req,res,next){
     
      Aboutus.findOne({_id:req.body.id},function (err, aboutUs){
         if(!aboutUs){
@@ -86,7 +86,7 @@ router.post('/getAboutSCIEDetail',function(req,res,next){
 /*
   删除aboutSCIE
 */
-router.post('/removeAboutSCIE',function(req,res,next){
+router.post('/removeAboutUS',function(req,res,next){
     
     Aboutus.remove({_id:req.body.id},function (err){
        if(err){
@@ -103,7 +103,7 @@ router.post('/removeAboutSCIE',function(req,res,next){
 /*
   应用about SCIE
 */
-router.post('/applyAboutSCIE',function(req,res,next){
+router.post('/applyAboutUS',function(req,res,next){
     
     Aboutus.update({isApply:true},{$set: {isApply: false}},{multi:true}).catch(err=>{
         console.log(err)
@@ -116,6 +116,30 @@ router.post('/applyAboutSCIE',function(req,res,next){
            res.json({code:0,message:'操作成功'});
         }
     })
+   
+  
+})
+/*
+  批量删除about us
+*/
+router.post('/batchDeleteAboutUS',function(req,res,next){
+    let aboutUSList = req.body.aboutUSList;
+    let errContent = '';
+    for(let i = 0; i < aboutUSList.length; i++){
+        Aboutus.remove({_id:aboutUSList[i]._id},function (err){
+            if(err){
+                errContent = aboutUSList[i].content
+            }  
+         }).catch(err=>{
+             console.log(err)
+         });
+    }
+    if(errContent){
+        res.json({code:1,message:'删除'+errContent.replace(/<[^>]+>/g,"")+ '时产生错误'})
+    }else{
+        res.json({code:0,message:'删除成功'})
+    }
+   
    
   
 })
