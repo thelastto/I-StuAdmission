@@ -1,21 +1,19 @@
 <template>
   <div class="components-container">
       <div style="width:500px;">
-        <el-form ref="form" :model="form" label-width="80px" size="mini">
-          <el-form-item prop="sNumber" label="学号" :rules="[{ 
-              required: true, message: '请输入学号', trigger: 'blur' 
-              },{ min:10, max:10, message: '请输入10位数学号', trigger: 'blur,change' 
-              }]">
-              <el-input v-model="form.sNumber" v-if="!isEdit"></el-input>
-              <el-input v-model="form.sNumber" v-else disabled></el-input>
+        <el-form ref="form" :model="form" label-width="100px" size="mini">
+          <el-form-item prop="name" label="中介名称" :rules="[{ 
+              required: true, message: '请输入中介名称', trigger: 'blur' }]">
+              <el-input v-model="form.name" v-if="!isEdit"></el-input>
+              <el-input v-model="form.name" v-else disabled></el-input>
           </el-form-item>  
-          <el-form-item prop="name" label="姓名" :rules="[{ 
-              required: true, message: '请输入姓名', trigger: 'blur' }]">
-              <el-input v-model="form.name"></el-input>
+          <el-form-item prop="linkman" label="联系人" :rules="[{ 
+              required: true, message: '请输入联系人', trigger: 'blur' }]">
+              <el-input v-model="form.linkman"></el-input>
           </el-form-item>
-          <el-form-item prop="major" label="专业" :rules="[{ 
-              required: true, message: '请输入专业', trigger: 'blur' }]">
-              <el-input v-model="form.major"></el-input>
+          <el-form-item prop="phone" label="联系方式" :rules="[{ 
+              required: true, message: '请输入联系方式', trigger: 'blur' }]">
+              <el-input v-model="form.phone"></el-input>
           </el-form-item>
           <el-form-item prop="email" label="邮箱" :rules="[{ 
               required: true, message: '请输入邮箱地址', trigger: 'blur' 
@@ -52,30 +50,31 @@
   }
 </style>
 <script>
-  import { updateStu, getStuDetail } from 'api/api';
+  import { updateChannel, getChannelDetail } from 'api/api';
   export default {
     data() {
       return {
         isEdit: false,
         form: {
-          sNumber: '',
+          category: 'agency',
           name: '',
-          major: '',
+          linkman: '',
+          phone: '',
           email:'',
           notes:''
 
         },
-        stu_id:this.$route.params.id,
+        channel_id:this.$route.params.id,
       }
     },
     mounted(){
       let that = this;
-      if(that.stu_id){
-        getStuDetail({id:that.stu_id}).then(res => {
+      if(that.channel_id){
+        getChannelDetail({id:that.channel_id}).then(res => {
           console.log(res.data);
           if (!res.data.code) {
-            that.form = res.data.stu;
-            if(res.data.stu){
+            that.form = res.data.channel;
+            if(res.data.channel){
               that.isEdit = true;
             }
           } else {
@@ -91,10 +90,10 @@
     methods: {
       save() {
         let that = this;
-        updateStu({id:that.stu_id,stuform:that.form}).then(res => {
+        updateChannel({id:that.channel_id,channelform:that.form}).then(res => {
           if (!res.data.code) {
             this.$message({type:'success',message:res.data.message})
-            this.$router.push({name:'stuList'});
+            this.$router.push({name:'agencyList'});
           } else {
             this.$message({type:'error',message:res.data.message})
           }
