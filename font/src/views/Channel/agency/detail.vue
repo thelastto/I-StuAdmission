@@ -1,15 +1,15 @@
 <template>
-  <div id = "stuDetail">
+  <div id = "agencyDetail">
     <div style="width:500px;">
-        <el-form ref="form" :model="form" label-width="80px" size="mini">
-          <el-form-item prop="sNumber" label="学号：" >
-              <span>{{form.sNumber}}</span>
-          </el-form-item>  
-          <el-form-item prop="name" label="姓名：">
+        <el-form ref="form" :model="form" label-width="100px" size="mini">
+          <el-form-item prop="name" label="中介名称：">
               <span>{{form.name}}</span>
           </el-form-item>
-          <el-form-item prop="major" label="专业：">
-              <span>{{form.major}}</span>
+          <el-form-item prop="linkman" label="联系人">
+              <span>{{form.linkman}}</span>
+          </el-form-item>
+          <el-form-item prop="phone" label="联系方式">
+              <span>{{form.phone}}</span>
           </el-form-item>
           <el-form-item prop="email" label="邮箱：">
               <span>{{form.email}}</span>
@@ -22,26 +22,26 @@
   </div>
 </template>
 <script>
-import { getStuDetail } from 'api/api';
+import { getChannelDetail } from 'api/api';
 export default {
   data(){
       return{
           id: this.$route.params.id,
           form:{
-              sNumber:'',
               name:'',
-              major:'',
+              linkman:'',
+              phone:'',
               email:'',
-              notes:''
+              notes:'',
           }
       }
   },
   mounted(){
       let that = this;
-      getStuDetail({id:that.id}).then(res => {
+      getChannelDetail({id:that.id}).then(res => {
           console.log(res.data);
           if (!res.data.code) {
-            that.form = res.data.stu;
+            that.form = res.data.channel;
           } else {
               this.$message({
                 type: 'error',
