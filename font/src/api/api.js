@@ -36,34 +36,41 @@ export const signUpByPWD=params=>{
 
 
 /*
-  修改aboutSCIE
+  修改aboutUS
 */
-export const updateAboutSCIE=params=>{
-  return axios.post(`${apiUrl}/aboutUs/updateAboutSCIE`,params)
+export const updateAboutUS=params=>{
+  return axios.post(`${apiUrl}/aboutUs/updateAboutUS`,params)
 }
 /*
-  获取aboutSCIE列表
+  获取aboutUS列表
 */
-export const getAboutSCIE=params=>{
-  return axios.post(`${apiUrl}/aboutUs/getAboutSCIE`,params)
+export const getAboutUS=params=>{
+  return axios.post(`${apiUrl}/aboutUs/getAboutUS`,params)
 }
 /*
-  获取aboutSCIE具体内容
+  获取aboutUS具体内容
 */
-export const getAboutSCIEDetail=params=>{
-  return axios.post(`${apiUrl}/aboutUs/getAboutSCIEDetail`,params)
+export const getAboutUSDetail=params=>{
+  return axios.post(`${apiUrl}/aboutUs/getAboutUSDetail`,params)
 }
 /*
-  删除aboutSCIE
+  删除aboutUS
 */
-export const removeAboutSCIE=params=>{
-  return axios.post(`${apiUrl}/aboutUs/removeAboutSCIE`,params)
+export const removeAboutUS=params=>{
+  return axios.post(`${apiUrl}/aboutUs/removeAboutUS`,params)
 }
 /*
-  应用aboutSCIE
+  批量删除aboutUS
 */
-export const applyAboutSCIE=params=>{
-  return axios.post(`${apiUrl}/aboutUs/applyAboutSCIE`,params)
+export const batchDeleteAboutUS=params=>{
+  return axios.post(`${apiUrl}/aboutUs/batchDeleteAboutUS`,params)
+}
+
+/*
+  应用aboutUS
+*/
+export const applyAboutUS=params=>{
+  return axios.post(`${apiUrl}/aboutUs/applyAboutUS`,params)
 }
 /*
   修改留学生信息
@@ -100,4 +107,34 @@ export const exportToExel=()=>{
 */
 export const batchDeleteStu=params=>{
   return axios.post(`${apiUrl}/student/batchDeleteStu`,params)
+}
+/*
+  获取招生渠道列表
+*/
+export const getChannelList=params=>{
+  return axios.post(`${apiUrl}/channel/getChannelList`,params)
+}
+/*
+  获取招生渠道具体信息
+*/
+export const getChannelDetail=params=>{
+  return axios.post(`${apiUrl}/channel/getChannelDetail`,params)
+}
+/*
+  修改招生渠道信息
+*/
+export const updateChannel=params=>{
+  return axios.post(`${apiUrl}/channel/updateChannel`,params)
+}
+/*
+  删除招生渠道
+*/
+export const removeChannel=params=>{
+  return axios.post(`${apiUrl}/channel/removeChannel`,params)
+}
+/*
+  批量删除招生渠道
+*/
+export const batchDeleteChannel=params=>{
+  return axios.post(`${apiUrl}/channel/batchDeleteChannel`,params)
 }
