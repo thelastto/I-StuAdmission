@@ -66,6 +66,20 @@ router.post('/getAboutUS',function(req,res,next){
    
 })
 /*
+  获取about US页面
+*/
+router.post('/getAboutUsPage',function(req,res,next){
+     Aboutus.findOne({name:req.body.name,isApply:true},function(err,doc){
+        res.json({code:0,message:'success',content:doc.content})
+
+     })
+     .catch(err=>{
+         console.log(err)
+     });
+    
+   
+})
+/*
   获取about SCIE的具体内容
 */
 router.post('/getAboutUSDetail',function(req,res,next){
@@ -105,17 +119,19 @@ router.post('/removeAboutUS',function(req,res,next){
 */
 router.post('/applyAboutUS',function(req,res,next){
     
-    Aboutus.update({isApply:true},{$set: {isApply: false}},{multi:true}).catch(err=>{
+    Aboutus.update({name:req.body.name,isApply:true},{$set: {isApply: false}},{multi:true}).then(aboutUs=>{
+        Aboutus.update({_id:req.body.id},{$set: {isApply: true}},function(err,doc){
+            if(err){
+               res.json({code:1,message:'失败，请稍后再试'});
+            }else{
+               res.json({code:0,message:'操作成功'});
+            }
+        })
+        
+    }).catch(err=>{
         console.log(err)
-
-    });
-    Aboutus.update({_id:req.body.id},{$set: {isApply: true}},function(err,doc){
-        if(err){
-           res.json({code:1,message:'失败，请稍后再试'});
-        }else{
-           res.json({code:0,message:'操作成功'});
-        }
     })
+    
    
   
 })
