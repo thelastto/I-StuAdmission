@@ -9,7 +9,7 @@ import StuList from 'views/Student/StuInfo/list'
 import StuDetail from 'views/Student/StuInfo/detail'
 import StuEdit from 'views/Student/StuInfo/edit'
 import StuStatistics from 'views/Student/statistics'
-import Pano from 'views/Pano/index'
+import Email from 'views/Email/index'
 import StuWebSite from 'views/StuWebSite/index'
 // import Home from 'views/StuWebSite/Home/index'
 // import ColumnSetting from 'views/StuWebSite/Home/columnSetting' 
@@ -25,8 +25,11 @@ import ContactUsEdit from 'views/StuWebSite/AboutUs/ContactUs/edit'
 import ContactUsList from 'views/StuWebSite/AboutUs/ContactUs/list'
 import News from 'views/StuWebSite/news'
 import Education from 'views/StuWebSite/Education/index'
-import Major from 'views/StuWebSite/Education/major'
-import Teacher from 'views/StuWebSite/Education/teacher'
+import Major from 'views/StuWebSite/Education/Major/index'
+import Teacher from 'views/StuWebSite/Education/Teacher/index'
+import TeacherList from 'views/StuWebSite/Education/Teacher/list'
+import TeacherDetail from 'views/StuWebSite/Education/Teacher/detail'
+import TeacherEdit from 'views/StuWebSite/Education/Teacher/edit'
 import Channel from 'views/Channel/index'
 import Agency from 'views/Channel/Agency/index'
 import AgencyList from 'views/Channel/Agency/list'
@@ -162,7 +165,24 @@ export const permissionRoutesMap=[{
         name:'teacher',
         cn:'TEACHER',
         meta:{requireRole:[1]},
-        component:Teacher
+        component:Teacher,
+        redirect:'/main/stuwebsite/education/teacher/list',
+        children:[{
+            path:'/main/stuwebsite/education/teacher/detail',
+            name:'teacherDetail',
+            meta:{requireRole:[1]},
+            component:TeacherDetail,
+          },{
+            path:'/main/stuwebsite/education/teacher/edit',
+            name:'teacherEdit',
+            meta:{requireRole:[1]},
+            component:TeacherEdit,
+          },{
+            path:'/main/stuwebsite/education/teacher/list',
+            name:'teacherList',
+            meta:{requireRole:[1]},
+            component:TeacherList,
+        }]
       }]
     },{
       path:'/main/stuwebsite/news',
@@ -178,14 +198,15 @@ export const permissionRoutesMap=[{
     icon:'el-icon-setting',//图标显示
     meta: { requireRole: [1,2] },
     component: Student,
+    redirect:'/main/student/list',
     children:[{
-      path: '/main/student/index',
-      name: 'stuInfo',
-      cn:'留学生信息管理',
-      meta: { requireRole: [1,2] },
-      component: StuInfo,
-      redirect:'/main/student/list',
-      children:[{
+      // path: '/main/student/index',
+      // name: 'stuInfo',
+      // cn:'留学生信息管理',
+      // meta: { requireRole: [1,2] },
+      // component: StuInfo,
+      // redirect:'/main/student/list',
+      // children:[{
         path:'/main/student/detail',
         name:'stuDetail',
         meta:{requireRole:[1]},
@@ -200,20 +221,22 @@ export const permissionRoutesMap=[{
         name:'stuList',
         meta:{requireRole:[1]},
         component:StuList,
-      }]
-    },{
-      path: '/main/student/statistics',
-      name: 'stuStatistics',
-      cn:'留学生数据统计',
-      meta: { requireRole: [1,2] },
-      component: StuStatistics,
-    }]
+      // }]
+    }
+    // ,{
+    //   path: '/main/student/statistics',
+    //   name: 'stuStatistics',
+    //   cn:'留学生数据统计',
+    //   meta: { requireRole: [1,2] },
+    //   component: StuStatistics,
+    // }
+  ]
   },{
-    path: '/main/pano',
-    name: 'pano',
+    path: '/main/email',
+    name: 'emai;',
     cn:'一键通知',
     icon:'el-icon-message',
-    component: Pano,
+    component: Email,
     meta: { requireRole: [1,2] }
   },{
     path: '/main/channel',
