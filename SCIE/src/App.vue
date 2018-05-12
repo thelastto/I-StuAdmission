@@ -42,10 +42,10 @@ export default {
  } 
  .container{
    width:100%;
-   min-height:1000px;
    height:auto;
    color:#979797;
    border-radius:5px;
-   background: #fff
+   background: #fff;
+   padding:20px;
  }
 </style>
