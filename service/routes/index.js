@@ -9,5 +9,7 @@ module.exports = (app) => {
   app.use('/api/aboutUs', require('./aboutUs')); 
   app.use('/api/student', require('./student')); 
   app.use('/api/channel', require('./channel')); 
+  app.use('/api/major', require('./major')); 
+  app.use('/api/teacher', require('./teacher')); 
 
 };
