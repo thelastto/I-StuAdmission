@@ -138,3 +138,57 @@ export const removeChannel=params=>{
 export const batchDeleteChannel=params=>{
   return axios.post(`${apiUrl}/channel/batchDeleteChannel`,params)
 }
+/*
+  添加专业
+*/
+export const addMajor=params=>{
+  return axios.post(`${apiUrl}/major/addMajor`,params)
+}
+/*
+  获取专业列表
+*/
+export const getMajorList=params=>{
+  return axios.post(`${apiUrl}/major/getMajorList`,params)
+}
+/*
+  删除专业
+*/
+export const removeMajor=params=>{
+  return axios.post(`${apiUrl}/major/removeMajor`,params)
+}
+/*
+  删除专业
+*/
+export const updateMajor=params=>{
+  return axios.post(`${apiUrl}/major/updateMajor`,params)
+}
+/*
+  获取教师列表
+*/
+export const getTeacherList=params=>{
+  return axios.post(`${apiUrl}/teacher/getTeacherList`,params)
+}
+/*
+  获取教师信息具体信息
+*/
+export const getTeacherDetail=params=>{
+  return axios.post(`${apiUrl}/teacher/getTeacherDetail`,params)
+}
+/*
+  修改教师信息信息
+*/
+export const updateTeacher=params=>{
+  return axios.post(`${apiUrl}/teacher/updateTeacher`,params)
+}
+/*
+  删除教师信息
+*/
+export const removeTeacher=params=>{
+  return axios.post(`${apiUrl}/teacher/removeTeacher`,params)
+}
+/*
+  批量删除教师信息
+*/
+export const batchDeleteTeacher=params=>{
+  return axios.post(`${apiUrl}/teacher/batchDeleteTeacher`,params)
+}
