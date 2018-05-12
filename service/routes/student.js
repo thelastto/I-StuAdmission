@@ -3,8 +3,6 @@ var express = require('express');
 var router = express.Router();
 var multipart = require('connect-multiparty');
 
-
-
 var multipartMiddleware = multipart();
 
 import XLSX from 'xlsx';
@@ -19,57 +17,91 @@ router.post('/updateStu',function(req,res,next){
         if(student){
             student.sNumber = req.body.stuform.sNumber;
             student.name = req.body.stuform.name;
+            student.gender = req.body.stuform.gender;
             student.major = req.body.stuform.major;
+            student.class = req.body.stuform.class;
             student.email = req.body.stuform.email;
+            student.phone = req.body.stuform.phone;
             student.notes = req.body.stuform.notes;
             student.save(function (err,doc) {
                 if(!doc){
-                  res.json({code:1,message:'失败，请稍后再试'})
+                  res.json({code:1,message:'修改失败'})
                 }else{
                   res.json({code:0,message:'修改成功'})
                 }
               });
             
         }else{
-            new Student({
-                sNumber : req.body.stuform.sNumber,
-                name : req.body.stuform.name,
-                major : req.body.stuform.major,
-                email : req.body.stuform.email,
-                notes : req.body.stuform.notes
-            }).save(function (err,doc) {
-                  if(!doc){
-                      console.log(err)
-                    res.json({code:1,message:'失败，请稍后再试'})
-                  }else{
-                    res.json({code:0,message:'添加成功'})
-                  }
-                });
+            Student.findOne({sNumber:req.body.stuform.sNumber},function(err, student){
+                if(student){
+                    res.json({code:1,message:'该学号已存在'})
+                    
+                }else{
+                    new Student({
+                        sNumber : req.body.stuform.sNumber,
+                        name : req.body.stuform.name,
+                        gender: req.body.stuform.gender,
+                        major : req.body.stuform.major,
+                        class : req.body.stuform.class,
+                        email : req.body.stuform.email,
+                        phone : req.body.stuform.phone,
+                        notes : req.body.stuform.notes
+                    }).save(function (err,doc) {
+                        if(err){
+                            res.json({code:1,message:'添加失败'})
+                        }else{
+                            res.json({code:0,message:'添加成功'})
+                        }
+                            
+                    });
+                }
+            })
+            
             
         }
     }).catch(err=>{
         console.log(err)
     });
-    
-   
 })
 /*
   获取留学生列表
 */
 router.post('/getStuList',function(req,res,next){
     let total = 0;
-     Student.find({}).count().exec().then(count=>{
-        console.log(count);
-        total=count;
-         Student.find({}).sort({sNumber:1}).limit(req.body.pageSize).skip((req.body.page-1)*req.body.pageSize).exec().then(stuList=>{
-             res.json({code:0,message:'success',total:total,stuList:stuList})
+    const reg = new RegExp(req.body.keywords, 'i')
+    if(req.body.pageSize){
+        Student.find({
+            $or : [ //多条件，数组
+                {sNumber : {$regex : reg}},
+                {name : {$regex : reg}},
+                {major : {$regex : reg}}
+            ]}).count().exec().then(count=>{
+            console.log(count);
+            total=count;
+             Student.find({
+                $or : [ //多条件，数组
+                    {sNumber : {$regex : reg}},
+                    {name : {$regex : reg}},
+                    {major : {$regex : reg}}
+                ]}).sort({sNumber:1}).limit(req.body.pageSize).skip((req.body.page-1)*req.body.pageSize).exec().then(stuList=>{
+                 res.json({code:0,message:'success',total:total,stuList:stuList})
+             }).catch(err=>{
+                 console.log(err)
+             })
          }).catch(err=>{
              console.log(err)
-         })
-     }).catch(err=>{
-         console.log(err)
-     });
-    
+         });
+    }else{
+        Student.find({
+            $or : [ //多条件，数组
+                {sNumber : {$regex : reg}},
+                {name : {$regex : reg}},
+                {major : {$regex : reg}}
+            ]},function(err,doc){
+                res.json({code:0,message:'success',total:total,stuList:doc})
+            }
+        )
+    }
    
 })
 /*
@@ -109,38 +141,34 @@ router.post('/removeStu',function(req,res,next){
   导入
 */
 router.post('/saveStuFromFile', multipartMiddleware,function(req,res){
-        const workbook = XLSX.readFile(req.files.file.path);
-        // 获取 Excel 中所有表名
-        const sheetNames = workbook.SheetNames; // 返回 ['sheet1', 'sheet2']
-        // 根据表名获取对应某张表
-        const worksheet = workbook.Sheets[sheetNames[0]];
-        const result = XLSX.utils.sheet_to_json(worksheet);
-        let errline = -1;
-        for(let i = 0; i < result.length; i++){
-            if(!result[i].学号||!result[i].姓名||!result[i].专业){
-                errline = i;
-                break;
-            }
-            Student.update({sNumber:result[i].学号},
-                {name:result[i].姓名,gender:result[i].gender||'',
-                 major:result[i].专业,class:result[i].班级||'',
-                 email:result[i].邮箱||'',phone:result[i].手机||'',notes:result[i].备注||''},
-                {upsert:true},function(err){
-                    if(err){
-                        errline = i;
-                        console.log(err);
-                    }
+    const workbook = XLSX.readFile(req.files.file.path);
+    // 获取 Excel 中所有表名
+    const sheetNames = workbook.SheetNames; // 返回 ['sheet1', 'sheet2']
+    // 根据表名获取对应某张表
+    const worksheet = workbook.Sheets[sheetNames[0]];
+    const result = XLSX.utils.sheet_to_json(worksheet);
+    let errline = -1;
+    for(let i = 0; i < result.length; i++){
+        if(!result[i].学号||!result[i].姓名||!result[i].专业){
+            errline = i;
+            break;
+        }
+        Student.update({sNumber:result[i].学号},
+            {name:result[i].姓名,gender:result[i].gender||'',
+            major:result[i].专业,class:result[i].班级||'',
+            email:result[i].邮箱||'',phone:result[i].手机||'',notes:result[i].备注||''},
+            {upsert:true},function(err){
+                if(err){
+                    errline = i;
+                    console.log(err);
                 }
-            );
-          }
-          if(errline<0){
-              res.json({code:0,message:'导入成功'})
-          }else{
-              res.json({code:1,message:'填写错误！',err:result[errline]})
-          }
-        
-   
-  
+            });
+    }
+    if(errline<0){
+        res.json({code:0,message:'导入成功'})
+    }else{
+        res.json({code:1,message:'填写错误！',err:result[errline]})
+    }
 }),
 /*
   导出
