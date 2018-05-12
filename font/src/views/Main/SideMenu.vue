@@ -1,7 +1,7 @@
 <template  id='sideMenu'>
     <div>
         <template v-for="item in routes[0].children" >
-            <el-submenu :index="item.path"  :key='item.name' v-if='item.children'>
+            <el-submenu :index="item.path"  :key='item.name' v-if='item.children&&item.children[0].cn'>
                 <template slot="title"> <i :class="item.icon"></i>{{item.cn}}</template>
                 <template v-for='child in item.children' >
                     <el-submenu :index="child.path" :key='child.name' v-if='child.children&&child.children[0].cn'>
@@ -14,7 +14,7 @@
                     
                 </template>  
             </el-submenu>
-            <el-menu-item :index="item.path"  :key='item.name' v-if='!item.children'><i :class="item.icon"></i><span slot="title">{{item.cn}}</span> </el-menu-item>
+            <el-menu-item :index="item.path"  :key='item.name' v-else><i :class="item.icon"></i><span slot="title">{{item.cn}}</span> </el-menu-item>
             
         </template>
     </div> 
