@@ -218,7 +218,7 @@
                 type: 'warning'
             }).then(() => {
                 that.loading = true;
-                applyAboutUS({ id: row._id }).then(res => {
+                applyAboutUS({name:'aboutSCIE', id: row._id }).then(res => {
                     this.$message({
                         type: 'success',
                         message: res.data.message
