@@ -102,9 +102,8 @@
     
             </div>
         </div>
-        <div >
-            <div class="block">
-                <el-pagination
+        <div class="footer">
+          <el-pagination
                   @current-change="handleCurrentChange"
                   @size-change = "handleSizeChange"
                   :current-page="currentPage"
@@ -112,8 +111,7 @@
                   :page-size="10"
                   layout="total, sizes, prev, pager, next, jumper"
                   :total="page.total">
-                </el-pagination>
-            </div>
+          </el-pagination>
         </div>
         
     </div>
@@ -280,5 +278,8 @@ export default {
 .form-inline{
     float:right;
 
+}
+.footer{
+    margin-top:20px;
 }
 </style>
