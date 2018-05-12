@@ -102,8 +102,7 @@
     
             </div>
         </div>
-        <div >
-            <div class="block">
+        <div class="footer">
                 <el-pagination
                   @current-change="handleCurrentChange"
                   @size-change = "handleSizeChange"
@@ -113,7 +112,6 @@
                   layout="total, sizes, prev, pager, next, jumper"
                   :total="page.total">
                 </el-pagination>
-            </div>
         </div>
         
     </div>
