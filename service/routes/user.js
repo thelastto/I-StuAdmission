@@ -99,14 +99,14 @@ router.post('/login', function (req, res, next) {
           } else {
             res.json({
               code: 1,
-              message: '认证失败,密码错误!'
+              message: '用户名或密码错误!'
             });
           }
         });
       } else {
         res.json({
           code: 1,
-          message: 'user is no-exist'
+          message: '用户名或密码错误'
         })
       }
     }
