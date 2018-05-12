@@ -14,7 +14,7 @@
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="submitForm()">账号登录</el-button>
-                        <el-button @click="signUp()">注册</el-button>
+                        
                     </el-form-item>
                 </el-form>
 
