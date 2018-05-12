@@ -5,7 +5,7 @@ const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 import config from '../public/config'
 exports.check_auth = function (req, res, next) {
-    const whiteList = ['login', 'oauthPath', 'signUp'] // 不重定向白名单
+    const whiteList = ['login', 'oauthPath', 'signUp','getAboutUsPage','getMajorList'] // 不重定向白名单
     let index = false
     Object.keys(whiteList).forEach(key => {
         if (req.url.toString().includes(whiteList[key])) {
