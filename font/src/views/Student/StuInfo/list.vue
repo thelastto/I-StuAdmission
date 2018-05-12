@@ -50,7 +50,7 @@
 
                 <el-form-item>
                     <el-button type="primary"
-                               @click="onSubmit">查询</el-button>
+                               @click="getData">查询</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -108,8 +108,7 @@
     
             </div>
         </div>
-        <div >
-            <div class="block">
+        <div class="footer">
                 <el-pagination
                   @current-change="handleCurrentChange"
                   @size-change = "handleSizeChange"
@@ -119,7 +118,6 @@
                   layout="total, sizes, prev, pager, next, jumper"
                   :total="page.total">
                 </el-pagination>
-            </div>
         </div>
         
     </div>
@@ -163,7 +161,7 @@ export default {
         let that = this;
         let param = this.filtr;
         this.loading = true;
-        getStuList({id:'',page:this.filtr.page, pageSize:this.filtr.pageSize}).then(res => {
+        getStuList({id:'',page:this.filtr.page, pageSize:this.filtr.pageSize,keywords:this.formInline.keywords}).then(res => {
           console.log(res.data);
           if (!res.data.code) {
             that.page.total = res.data.total;
@@ -286,5 +284,18 @@ export default {
 .form-inline{
     float:right;
 
+}
+.el-pagination{
+    text-align: center
+}
+.footer{
+    margin-top:20px;
+}
+.el-table th {
+    background-color: #f5f7fa;
+    text-align: left;
+}
+.el-table__header-wrapper thead div, .el-table__footer-wrapper thead div {
+    background-color: #f5f7fa;
 }
 </style>
