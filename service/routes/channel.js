@@ -8,17 +8,33 @@ import Channel from '../models/channel.js'
 */
 router.post('/getChannelList',function(req,res,next){
     let total = 0;
-     Channel.find({category:req.body.category}).count().exec().then(count=>{
-        console.log(count);
-        total=count;
-        Channel.find({category:req.body.category}).limit(req.body.pageSize).skip((req.body.page-1)*req.body.pageSize).exec().then(channelList=>{
-             res.json({code:0,message:'success',total:total,channelList:channelList})
+    const reg = new RegExp(req.body.keywords, 'i')
+    if(req.body.pageSize){
+        Channel.find({$or : [ //多条件，数组
+            {name : {$regex : reg}},
+            {linkman : {$regex : reg}},
+        ],
+        category:req.body.category}).count().exec().then(count=>{
+            console.log(count);
+            total=count;
+            Channel.find({category:req.body.category}).limit(req.body.pageSize).skip((req.body.page-1)*req.body.pageSize).exec().then(channelList=>{
+                 res.json({code:0,message:'success',total:total,channelList:channelList})
+             }).catch(err=>{
+                 console.log(err)
+             })
          }).catch(err=>{
              console.log(err)
-         })
-     }).catch(err=>{
-         console.log(err)
-     });
+         });
+    }else{
+        Channel.find({
+            $or : [ //多条件，数组
+                {name : {$regex : reg}},
+            {linkman : {$regex : reg}},
+            ]},function(err,doc){
+                res.json({code:0,message:'success',total:total,channelList:doc})
+            }
+        )
+    }
     
    
 })
