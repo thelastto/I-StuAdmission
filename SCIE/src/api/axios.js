@@ -13,22 +13,6 @@ let addInterceptor = axios => {
       // 请求错误时做些事
       return Promise.reject(error)
     })
-  // 添加响应拦截器
-  axios.interceptors.response.use(
-    function (response) {
-      // 对响应数据做些事
-      if(response.data.code===1){
-        console.log(response.data.message)
-            Cookie.remove('user')
-            router.push({path:'/login'})
-      }
-      console.log(document.cookie)
-      return response
-    },
-    function (error) {
-      // 请求错误时做些事
-      return Promise.reject(error)
-    })
 }
 axios.addInterceptor = addInterceptor
 export default axios

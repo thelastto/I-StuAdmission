@@ -3,10 +3,8 @@
     <div >
         
         <div style="margin-bottom:20px;"> 
-          <el-tooltip content="添加一个新的学生信息" placement="top">
           <el-button type="primary" plain icon="el-icon-plus" 
             @click="handleAdd()">新建</el-button>
-          </el-tooltip>
           <el-button  type="danger" plain icon="el-icon-delete" @click="handleBatchDelete">批量删除</el-button>
           <el-button type="success" plain icon="el-icon-document"  
               @click="dialogFormVisible = true">导入</el-button>
@@ -45,7 +43,7 @@
                      class="form-inline">
                 <el-form-item label="关键字">
                     <el-input v-model="formInline.keywords"
-                              placeholder="请输入关键词"></el-input>
+                              placeholder="学号/姓名/专业"></el-input>
                 </el-form-item>
 
                 <el-form-item>

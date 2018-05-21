@@ -16,14 +16,15 @@ router.post('/updateTeacher',function(req,res){
         if(teacher){
             teacher.tNumber = req.body.teacherform.tNumber,
             teacher.name = req.body.teacherform.name,
+            teacher.image = req.body.teacherform.image,
             teacher.professionalTitle = req.body.teacherform.professionalTitle,
-            teacher.adress = req.body.teacherform.adress,
+            teacher.address = req.body.teacherform.address,
             teacher.email = req.body.teacherform.email,
             teacher.phone = req.body.teacherform.phone,
             teacher.notes = req.body.teacherform.notes
             teacher.save(function (err,doc) {
                 if(!doc){
-                  res.json({code:1,message:'修改失败'})
+                  res.json({code:2,message:'修改失败'})
                 }else{
                   res.json({code:0,message:'修改成功'})
                 }
@@ -32,20 +33,21 @@ router.post('/updateTeacher',function(req,res){
         }else{
             Teacher.findOne({tNumber:req.body.teacherform.tNumber},function(err, teacher){
                 if(teacher){
-                    res.json({code:1,message:'该教师号已存在'})
+                    res.json({code:2,message:'该教师号已存在'})
                     
                 }else{
                     new Teacher({
                         tNumber : req.body.teacherform.tNumber,
                         name : req.body.teacherform.name,
+                        image : req.body.teacherform.image,
                         professionalTitle: req.body.teacherform.professionalTitle,
-                        adress: req.body.teacherform.adress,
+                        address: req.body.teacherform.address,
                         email : req.body.teacherform.email,
                         phone : req.body.teacherform.phone,
                         notes : req.body.teacherform.notes
                     }).save(function (err,doc) {
                         if(err){
-                            res.json({code:1,message:'添加失败'})
+                            res.json({code:2,message:'添加失败'})
                         }else{
                             res.json({code:0,message:'添加成功'})
                         }
@@ -71,7 +73,7 @@ router.post('/getTeacherList',function(req,res,next){
             $or : [ //多条件，数组
                 {tNumber : {$regex : reg}},
                 {name : {$regex : reg}},
-                {major : {$regex : reg}}
+                {professionalTitle : {$regex : reg}}
             ]}).count().exec().then(count=>{
             console.log(count);
             total=count;
@@ -79,7 +81,7 @@ router.post('/getTeacherList',function(req,res,next){
                 $or : [ //多条件，数组
                     {tNumber : {$regex : reg}},
                     {name : {$regex : reg}},
-                    {major : {$regex : reg}}
+                    {professionalTitle : {$regex : reg}}
                 ]}).sort({sNumber:1}).limit(req.body.pageSize).skip((req.body.page-1)*req.body.pageSize).exec().then(teacherList=>{
                  res.json({code:0,message:'success',total:total,teacherList:teacherList})
              }).catch(err=>{
@@ -109,7 +111,7 @@ router.post('/getTeacherList',function(req,res,next){
 router.post('/getTeacherDetail',function(req,res,next){
     Teacher.findOne({_id:req.body.id},function (err, teacher){
        if(!teacher){
-           res.json({code:1,message:'找不到该生信息，请刷新后重试'})
+           res.json({code:2,message:'找不到该教师信息，请刷新后重试'})
        }else{
            res.json({code:0,message:'查询成功',teacher:teacher})
        }
@@ -126,7 +128,7 @@ router.post('/removeTeacher',function(req,res,next){
     
     Teacher.remove({_id:req.body.id},function (err){
        if(err){
-           res.json({code:1,message:'删除失败'})
+           res.json({code:2,message:'删除失败'})
        }else{
            res.json({code:0,message:'删除成功'})
        }
@@ -153,7 +155,7 @@ router.post('/batchDeleteTeacher',function(req,res,next){
          });
     }
     if(errList.length>0){
-        res.json({code:1,message:'删除完成，其中学号为'+errList+'的教师删除失败'})
+        res.json({code:2,message:'删除完成，其中学号为'+errList+'的教师删除失败'})
     }else{
         res.json({code:0,message:'删除成功'})
     }

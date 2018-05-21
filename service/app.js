@@ -13,6 +13,7 @@ const Strategy = require('passport-http-bearer').Strategy; // token验证模块
 const routes = require('./routes');
 const config = require('./public/config');
 const authToken = require('./utils/apiToken')
+const ueditor = require("ueditor"); 
 
 // var index = require('./routes/index');
 // // let login = require('./routes/login');
@@ -58,10 +59,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 routes(app); // 路由引入
 mongoose.Promise = global.Promise;
 mongoose.connect(config.database); // 连接数据库
-// app.use('/', index);
-// // app.use('/login', login);
-// app.use('/api/user', user);
-// app.use('/feedback', feedback);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -83,4 +80,7 @@ app.use(function (err, req, res, next) {
 app.get('/', function (req, res) {
   res.sendfile(path.join(__dirname, '/index.html'));
 });
+
+
+
 module.exports = app;

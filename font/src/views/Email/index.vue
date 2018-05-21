@@ -64,7 +64,7 @@
   <el-table
     :data="channelList"
     @selection-change="changeChannel"
-    max-height="300">
+    max-height="400">
     <el-table-column type="selection"
         sortable
         @selection-change="changeChannel">
@@ -146,7 +146,6 @@ import { getStuList,getChannelList} from 'api/api';
       },
       handleClose(tag) {
         this.recipients.splice(this.recipients.indexOf(tag), 1);
-        this.stuList.push(tag);
       },
       getStuData(){
         let that = this;

@@ -8,6 +8,7 @@ import Education from '../views/Education/index.vue'
 import Major from '../views/Education/major.vue'
 import Teacher from '../views/Education/teacher.vue'
 import News from '../views/News/index.vue'
+import NewsDetail from '../views/News/detail.vue'
 
 
 Vue.use(Router)
@@ -53,6 +54,10 @@ export const map = [{
   name:'news',
   cn:'NEWS',
   component:News
+},{
+  path:'/news/detail',
+  name:'newsDetail',
+  component:NewsDetail
 }]
 export default new Router({
   // mode: 'history',

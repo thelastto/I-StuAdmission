@@ -2,7 +2,7 @@
   <div id="aboutSCIEDetail" class="components-container">
       
       <div class="editor-container">
-        <UE :defaultMsg=defaultMsg :config=config ref="ue" ></UE>
+        <UE :defaultMsg=defaultMsg :config="config" ref="ue" ></UE>
       </div>
       <div class="efloor">
         <el-button type="primary" @click="save()">保存</el-button>
@@ -35,10 +35,9 @@
       return {
         aboutUS_id:this.$route.params.id,
         defaultMsg: '',
-        username: this.$store.getters.name,
         config: {
           initialFrameWidth: null,
-          initialFrameHeight: 350
+          initialFrameHeight: 500
         }
       }
     },
@@ -63,7 +62,7 @@
       save() {
         let that = this;
         let content = this.$refs.ue.getUEContent();
-        updateAboutUS({id:that.aboutUS_id,name:'aboutSCIE',content:content,username:that.username}).then(res => {
+        updateAboutUS({id:that.aboutUS_id,name:'aboutSCIE',content:content}).then(res => {
           if (!res.data.code) {
             this.$message({type:'success',message:res.data.message})
             this.$router.push({name:'aboutSCIEList'});
@@ -76,7 +75,7 @@
         console.log(content)
       },
       back(){
-        this.$router.go(-1);
+        this.$router.push({name:'aboutSCIEList'});
       }
     }
   };

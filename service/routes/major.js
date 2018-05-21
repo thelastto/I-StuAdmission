@@ -28,7 +28,7 @@ router.post('/getMajorList',function(req,res,next){
 router.post('/addMajor',function(req,res,next){
     Major.findOne({name:req.body.name},function (err, major) {
        if(major){
-           res.json({code:1,message:'添加失败，该专业信息已经存在'})
+           res.json({code:2,message:'添加失败，该专业信息已经存在'})
            
        }else{
            new Major({
@@ -57,14 +57,14 @@ router.post('/updateMajor',function(req,res,next){
             major.detail= req.body.majorForm.detail;
             major.save(function (err,doc) {
                 if(!doc){
-                  res.json({code:1,message:'失败，请稍后再试'})
+                  res.json({code:2,message:'失败，请稍后再试'})
                 }else{
                   res.json({code:0,message:'修改成功'})
                 }
               });
             
         }else{
-            res.json({code:1,message:'修改失败'})
+            res.json({code:2,message:'修改失败'})
             
         }
     }).catch(err=>{
@@ -80,7 +80,7 @@ router.post('/removeMajor',function(req,res,next){
     
     Major.remove({_id:req.body.id},function (err){
        if(err){
-           res.json({code:1,message:'删除失败'})
+           res.json({code:2,message:'删除失败'})
        }else{
            res.json({code:0,message:'删除成功'})
        }
@@ -106,7 +106,7 @@ router.post('/batchDeleteMajor',function(req,res,next){
          });
     }
     if(errList.length>0){
-        res.json({code:1,message:'删除完成，其中'+errList+'删除失败'})
+        res.json({code:2,message:'删除完成，其中'+errList+'删除失败'})
     }else{
         res.json({code:0,message:'删除成功'})
     }

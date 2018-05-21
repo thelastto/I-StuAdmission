@@ -15,8 +15,8 @@ export default {
 @import url(assets/css/hack.css);
 
  #app {
- 	height: 100%;
-    background:#f6f6f6
+ 	min-height: 100%;
+    height:auto;
  }
  li{
  outline: 0px!important;

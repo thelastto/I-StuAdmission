@@ -1,45 +1,32 @@
 <template>
-  <div  class="components-container">
+  <div  class="major-container">
    
-    <div style="width:100%;overflow:hidden;">
-        <el-table :data="majors" style="width: 100%">
-            <el-table-column type="expand">
-                <template slot-scope="props">
-                    <el-form label-position="left" inline class="demo-table-expand">
-                        <el-form-item label="introduction:">
-                            <span>{{ props.row.detail}}</span>
-                        </el-form-item>
-                    </el-form>
-                </template>
-            </el-table-column>
-            
-            <el-table-column label="Majors" prop="name" min-width="300"> 
-
-            </el-table-column>
-            
-        </el-table>
-    
-    </div>
+    <el-collapse >
+      <el-collapse-item  v-for="major in majors" :title="major.name" :key="major">
+        <div>{{major.detail}}</div>
+      </el-collapse-item>
+    </el-collapse>
 
     <div class="pagination">
             <div class="block">
-                <el-pagination
-      :current-page="currentPage"
-      :page-sizes="[10,20,30,40]"
-      :page-size="10"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="page.total"
-      @current-change="handleCurrentChange"
-      @size-change="handleSizeChange">
-    </el-pagination>
+              <el-pagination @current-change="handleCurrentChange"
+             :current-page.sync="currentPage1" :page-size="10" layout="total, prev, pager, next"
+             :total="page.total">
+              </el-pagination>
             </div>
         </div>
   </div>
   
 </template>
 <style>
+.major-container{
+  padding: 0 20px
+}
   .pagination{
-      margin:20px auto;
+      padding:20px;
+  }
+  .el-pagination{
+    text-align: center
   }
   .ehead{
     margin:20px;
@@ -87,8 +74,6 @@
             filtr: {
                 name: '',
                 kyw: '',
-                bdate: '',
-                edate: '',
                 page: 1,
                 pageSize: 10
             },
@@ -106,7 +91,7 @@
         let that = this;
         let param = this.filtr;
         this.loading = true;
-        getMajorList({page:this.filtr.page, pageSize:this.filtr.pageSize}).then(res => {
+        getMajorList({page:this.filtr.page, pageSize:10}).then(res => {
           if (!res.data.code) {
             that.page.total = res.data.total;
             that.majors = res.data.majorList;

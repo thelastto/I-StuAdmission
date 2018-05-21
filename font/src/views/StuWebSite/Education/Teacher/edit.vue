@@ -13,27 +13,35 @@
               required: true, message: '请输入姓名', trigger: 'blur' }]">
               <el-input v-model="teacherForm.name"></el-input>
           </el-form-item>
-          <el-form-item prop="professionalTitle" label="职称" >
+          <el-form-item prop="image" label="照片" >
+            <el-upload class="avatar-uploader" action="/api/upload?type=teacher"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload">
+            <img v-if="teacherForm.image" :src="teacherForm.image" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+          </el-form-item>
+          <el-form-item prop="professionalTitle" label="职位" >
               <el-input v-model="teacherForm.professionalTitle"></el-input>
           </el-form-item>
-          <el-form-item prop="adress" label="地址" >
-              <el-input v-model="teacherForm.adress"></el-input>
+          <el-form-item prop="address" label="办公室" >
+              <el-input v-model="teacherForm.address"></el-input>
           </el-form-item>
           <el-form-item prop="email" label="邮箱" :rules="[{ type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur,change' 
               }]">
               <el-input v-model="teacherForm.email"></el-input>
           </el-form-item>
-          <el-form-item prop="phone" label="手机" :rules="[{ min:11, max:11, message: '请输入11位手机号', trigger: 'blur,change' 
-              }]">
+          <el-form-item prop="phone" label="电话" >
               <el-input v-model="teacherForm.phone"></el-input>
           </el-form-item>  
-          <el-form-item prop="notes" label="备注">
+          <el-form-item prop="notes" label="介绍">
               <el-input type="textarea" v-model="teacherForm.notes"></el-input>
           </el-form-item>
 
         </el-form>
         <div class="floor">
-        <el-button type="primary" @click="save()">保存</el-button>
+        <el-button type="primary" @click="save('teacherForm')">保存</el-button>
         <el-button type="info" @click="back()">返回</el-button>
         </div>
       </div>
@@ -95,13 +103,13 @@
     data() {
       return {
         isEdit: false,
-        imageUrl: '',
         teacherForm: {
           _id:this.$route.params.id,
           tNumber: '',
           name: '',
+          image:'',
           professionalTitle: '',
-          adress:'',
+          address:'',
           email:'',
           phone: '',
           notes:''
@@ -131,24 +139,50 @@
       
     },
     methods: {
-      submitUpload() {
-        this.$refs.upload.submit();
+      handleAvatarSuccess(res, file) {
+         if(!res.code){
+            this.teacherForm.image=res.url
+              this.$message({
+                type: 'success',
+                message: res.message
+              });
+          }else{
+              this.$message({
+                type: 'error',
+                duration:0,
+                showClose:true,
+                message: res.message
+              });
+          }
       },
-      handleRemove(file, fileList) {
-        console.log(file, fileList);
+      beforeAvatarUpload(file) {
+        const isJPG = (file.type === 'image/jpeg'||file.type ==='image/png');
+        const isLt2M = file.size / 1024 / 1024 < 2;
+
+        if (!isJPG) {
+          this.$message.error('上传图片只能是 JPG 格式!');
+        }
+        if (!isLt2M) {
+          this.$message.error('上传图片大小不能超过 2MB!');
+        }
+        return isJPG && isLt2M;
       },
-      handlePreview(file) {
-        console.log(file);
-      },
-      save() {
+      save(formName) {
         let that = this;
-        updateTeacher({id:that.teacher_id,teacherform:that.teacherForm}).then(res => {
-          if (!res.data.code) {
-            that.$message({type:'success',message:res.data.message})
-            that.$router.push({name:'teacherList'});
-          } else {
-            that.$message({type:'error',message:res.data.message})
-            that.$router.push({name:'teacherEdit'});
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            updateTeacher({id:that.teacher_id,teacherform:that.teacherForm}).then(res => {
+              if (!res.data.code) {
+                that.$message({type:'success',message:res.data.message})
+                that.$router.push({name:'teacherList'});
+              } else {
+                that.$message({type:'error',message:res.data.message})
+                that.$router.push({name:'teacherEdit'});
+              }
+            })
+          }else{
+              that.$message({type:'error',message:'请正确填写表格'})
+              return false;
           }
         })
       },

@@ -25,7 +25,7 @@ router.post('/updateStu',function(req,res,next){
             student.notes = req.body.stuform.notes;
             student.save(function (err,doc) {
                 if(!doc){
-                  res.json({code:1,message:'修改失败'})
+                  res.json({code:2,message:'修改失败'})
                 }else{
                   res.json({code:0,message:'修改成功'})
                 }
@@ -34,7 +34,7 @@ router.post('/updateStu',function(req,res,next){
         }else{
             Student.findOne({sNumber:req.body.stuform.sNumber},function(err, student){
                 if(student){
-                    res.json({code:1,message:'该学号已存在'})
+                    res.json({code:2,message:'该学号已存在'})
                     
                 }else{
                     new Student({
@@ -48,7 +48,7 @@ router.post('/updateStu',function(req,res,next){
                         notes : req.body.stuform.notes
                     }).save(function (err,doc) {
                         if(err){
-                            res.json({code:1,message:'添加失败'})
+                            res.json({code:2,message:'添加失败'})
                         }else{
                             res.json({code:0,message:'添加成功'})
                         }
@@ -110,7 +110,7 @@ router.post('/getStuList',function(req,res,next){
 router.post('/getStuDetail',function(req,res,next){
     Student.findOne({_id:req.body.id},function (err, student){
        if(!student){
-           res.json({code:1,message:'找不到该生信息，请刷新后重试'})
+           res.json({code:2,message:'找不到该生信息，请刷新后重试'})
        }else{
            res.json({code:0,message:'查询成功',stu:student})
        }
@@ -127,7 +127,7 @@ router.post('/removeStu',function(req,res,next){
     
     Student.remove({_id:req.body.id},function (err){
        if(err){
-           res.json({code:1,message:'删除失败'})
+           res.json({code:2,message:'删除失败'})
        }else{
            res.json({code:0,message:'删除成功'})
        }
@@ -167,7 +167,7 @@ router.post('/saveStuFromFile', multipartMiddleware,function(req,res){
     if(errline<0){
         res.json({code:0,message:'导入成功'})
     }else{
-        res.json({code:1,message:'填写错误！',err:result[errline]})
+        res.json({code:2,message:'填写错误！',err:result[errline]})
     }
 }),
 /*
@@ -208,7 +208,7 @@ router.get('/export',function(req,res,next){
         XLSX.writeFile(wb, 'public/downloads/信息学院留学生信息汇总表.xlsx');
         res.download('public/downloads/信息学院留学生信息汇总表.xlsx');
     }).catch(err=>{
-        res.json({code:1,message:'导出错误'})
+        res.json({code:2,message:'导出错误'})
     });
   
 }),
@@ -228,7 +228,7 @@ router.post('/batchDeleteStu',function(req,res,next){
          });
     }
     if(errList.length>0){
-        res.json({code:1,message:'删除完成，其中学号为'+errList+'的留学生删除失败'})
+        res.json({code:2,message:'删除完成，其中学号为'+errList+'的留学生删除失败'})
     }else{
         res.json({code:0,message:'删除成功'})
     }

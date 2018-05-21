@@ -192,3 +192,33 @@ export const removeTeacher=params=>{
 export const batchDeleteTeacher=params=>{
   return axios.post(`${apiUrl}/teacher/batchDeleteTeacher`,params)
 }
+/*
+  获取新闻列表
+*/
+export const getNewsList=params=>{
+  return axios.post(`${apiUrl}/news/getNewsList`,params)
+}
+/*
+  获取新闻信息具体信息
+*/
+export const getNewsDetail=params=>{
+  return axios.post(`${apiUrl}/news/getNewsDetail`,params)
+}
+/*
+  修改新闻信息信息
+*/
+export const updateNews=params=>{
+  return axios.post(`${apiUrl}/news/updateNews`,params)
+}
+/*
+  删除新闻信息
+*/
+export const removeNews=params=>{
+  return axios.post(`${apiUrl}/news/removeNews`,params)
+}
+/*
+  批量删除新闻信息
+*/
+export const batchDeleteNews=params=>{
+  return axios.post(`${apiUrl}/news/batchDeleteNews`,params)
+}

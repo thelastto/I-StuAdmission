@@ -6,31 +6,31 @@
     </div>
 
     <el-dialog title="添加一个专业" :visible.sync="dialogFormVisible">
-      <el-form :model="form">
-        <el-form-item label="专业名称">
+      <el-form :model="form" ref="form" :rules="rules">
+        <el-form-item label="专业名称" prop="name">
           <el-input v-model="form.name" auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item  label="专业介绍">
-              <el-input type="textarea" v-model="form.detail"></el-input>
+        <el-form-item  label="专业介绍" prop="detail">
+              <el-input type="textarea" v-model="form.detail" :autosize="{ minRows: 5, maxRows: 5}"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="handleAdd()">保 存</el-button>
+        <el-button type="primary" @click="handleAdd('form')">保 存</el-button>
       </div>
     </el-dialog>
      <el-dialog title="修改专业" :visible.sync="dialogUpdateVisible">
-      <el-form :model="updateForm">
-        <el-form-item label="专业名称" >
+      <el-form :model="updateForm" ref="updateForm" :rules="rules">
+        <el-form-item label="专业名称" prop="name" >
           <el-input v-model="updateForm.name" auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item  label="专业介绍">
-              <el-input type="textarea" v-model="updateForm.detail"></el-input>
+        <el-form-item  label="专业介绍" prop="detail">
+              <el-input type="textarea" v-model="updateForm.detail" :autosize="{ minRows: 5, maxRows: 5}"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="handleUpdate()">修 改</el-button>
+        <el-button @click="dialogUpdateVisible = false">取 消</el-button>
+        <el-button type="primary" @click="handleUpdate('updateForm')">修 改</el-button>
       </div>
     </el-dialog>
 
@@ -124,19 +124,15 @@
               detail: ''
             },
             updateForm:{},
-            formInline: {
-                name: '',
-                keywords: '',
-                daterange: ''
+            rules: {
+              name: [{ required: true, message: '请输入专业名称', trigger: 'blur' }],
+              detail: [{ required: true, message: '请输入专业简介', trigger: 'blur' }]
             },
             currentPage:1,
             loading: false,
             majors: [],
             filtr: {
                 name: '',
-                kyw: '',
-                bdate: '',
-                edate: '',
                 page: 1,
                 pageSize: 10
             },
@@ -176,28 +172,45 @@
           this.filtr.pageSize = val;
           this.getData();   
       },
-      handleAdd(){
+      handleAdd(formName){
         let that = this;
-          addMajor({name:that.form.name,detail:that.form.detail}).then(res => {
-          if (!res.data.code) {
-            that.$message({type:'success',message:res.data.message})
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            addMajor({name:that.form.name,detail:that.form.detail}).then(res => {
+              if (!res.data.code) {
+                that.$message({type:'success',message:res.data.message})
+                that.getData()
+              } else {
+                that.$message({type:'error',message:res.data.message})
+              }
+            })
           } else {
-            that.$message({type:'error',message:res.data.message})
+            that.$message({type:'error',message:'请正确填写表格'})
+            return false;
           }
         })
+
       },
       openUpdate(index,row){
         this.updateForm = row;
         this.dialogUpdateVisible = true;
       },
       
-      handleUpdate(index,row){
+      handleUpdate(formName){
           let that = this;
-          updateMajor({majorForm:that.updateForm}).then(res => {
-          if (!res.data.code) {
-            that.$message({type:'success',message:res.data.message})
-          } else {
-            that.$message({type:'error',message:res.data.message})
+          this.$refs[formName].validate((valid) => {
+            if (valid) {
+              updateMajor({majorForm:that.updateForm}).then(res => {
+                if (!res.data.code) {
+                  that.$message({type:'success',message:res.data.message})
+                  that.getData()
+                } else {
+                  that.$message({type:'error',message:res.data.message})
+                }
+              })
+            }else{
+              that.$message({type:'error',message:'请正确填写表格'})
+              return false;
           }
         })
       },

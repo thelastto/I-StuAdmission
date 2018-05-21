@@ -11,6 +11,9 @@ const TeacherSchema = new Schema({
     type: String,
     require: true // 不可为空约束
   },
+  image: {
+    type: String,
+  },
   professionalTitle: {
     type: String,
   },
@@ -20,7 +23,7 @@ const TeacherSchema = new Schema({
   phone: {
     type: String
   },
-  adress:{
+  address:{
       type:String,
   },
   picture: {

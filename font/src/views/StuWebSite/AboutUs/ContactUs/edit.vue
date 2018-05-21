@@ -35,10 +35,9 @@
       return {
         aboutUS_id:this.$route.params.id,
         defaultMsg: '',
-        username: this.$store.getters.name,
         config: {
           initialFrameWidth: null,
-          initialFrameHeight: 350
+          initialFrameHeight: 500
         }
       }
     },
@@ -63,7 +62,7 @@
       save() {
         let that = this;
         let content = this.$refs.ue.getUEContent();
-        updateAboutUS({id:that.aboutUS_id,name:'contactUs',content:content,username:that.username}).then(res => {
+        updateAboutUS({id:that.aboutUS_id,name:'contactUs',content:content}).then(res => {
           if (!res.data.code) {
             this.$message({type:'success',message:res.data.message})
             this.$router.push({name:'contactUsList'});

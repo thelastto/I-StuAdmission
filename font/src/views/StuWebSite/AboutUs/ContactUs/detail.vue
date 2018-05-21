@@ -1,6 +1,11 @@
 <template>
-  <div id = "contactUsDetail">
-    <div v-html="content"></div>
+ <div>
+    <div style="background:#fff;padding:20px">
+      <div v-html="content"></div>
+    </div>
+    <div class="floor">
+        <el-button type="info" @click="back()">返回</el-button>
+    </div>
   </div>
 </template>
 <script>
@@ -25,6 +30,11 @@ export default {
               })
           } 
       })
+  },
+  methods: {
+      back(){
+        this.$router.go(-1);
+      }
   }
 }
 </script>

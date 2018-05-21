@@ -26,14 +26,10 @@
           <el-form-item prop="class" label="班级" >
               <el-input v-model="form.class"></el-input>
           </el-form-item>
-          <el-form-item prop="email" label="邮箱" :rules="[{ 
-              required: true, message: '请输入邮箱地址', trigger: 'blur' 
-              },{ type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur,change' 
-              }]">
+          <el-form-item prop="email" label="邮箱" :rules="[{ type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur,change' }]">
               <el-input v-model="form.email"></el-input>
           </el-form-item>
-          <el-form-item prop="phone" label="手机" :rules="[{ min:11, max:11, message: '请输入11位手机号', trigger: 'blur,change' 
-              }]">
+          <el-form-item prop="phone" label="手机">
               <el-input v-model="form.phone"></el-input>
           </el-form-item>  
           <el-form-item prop="notes" label="备注">
@@ -41,7 +37,7 @@
           </el-form-item>
         </el-form>
         <div class="floor">
-        <el-button type="primary" @click="save()">保存</el-button>
+        <el-button type="primary" @click="save('form')">保存</el-button>
         <el-button type="info" @click="back()">返回</el-button>
         </div>
       </div>
@@ -115,17 +111,25 @@
       
     },
     methods: {
-      save() {
+      save(formName) {
         let that = this;
-        updateStu({id:that.stu_id,stuform:that.form}).then(res => {
-          if (!res.data.code) {
-            that.$message({type:'success',message:res.data.message})
-            that.$router.push({name:'stuList'});
-          } else {
-            that.$message({type:'error',message:res.data.message})
-            that.$router.push({name:'stuEdit'});
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            updateStu({id:that.stu_id,stuform:that.form}).then(res => {
+              if (!res.data.code) {
+                that.$message({type:'success',message:res.data.message})
+                that.$router.push({name:'stuList'});
+              } else {
+                that.$message({type:'error',message:res.data.message})
+                that.$router.push({name:'stuEdit'});
+              }
+            })
+          }else{
+              that.$message({type:'error',message:'请正确填写表格'})
+              return false;
           }
         })
+        
       },
       back(){
         this.$router.go(-1);

@@ -7,7 +7,7 @@
     <i class="el-icon-arrow-down el-icon--right"></i>
   </span>
   <el-dropdown-menu slot="dropdown">
-    <el-dropdown-item>邮箱设置</el-dropdown-item>
+    <el-dropdown-item>注销</el-dropdown-item>
   </el-dropdown-menu>
 </el-dropdown></div>
             
@@ -73,7 +73,6 @@ export default {
             float: right;
             margin-top: 20px;
             margin-right: 50px
-
         }
        
     }
@@ -88,11 +87,9 @@ export default {
         }
     &-container {
         display:flex;
-        position: absolute;
-        top: 60px;
-        bottom: 0px;
-        left: 0px;
+        min-height:850px;
         width:100%;
+        background: #f6f6f6;
         &__slider {
             width: 200px;
             flex: 0 0 200px;
@@ -104,6 +101,7 @@ export default {
             box-sizing: border-box;
             margin: 20px;
             width:100%;
+            
         }
     }
 }

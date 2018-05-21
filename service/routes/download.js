@@ -12,7 +12,7 @@ router.get('/', multipartMiddleware, function (req, res) {
     }else if(req.query.filename=='agencyTemplate'){
       res.download('public/downloads/中介模板.xlsx'); 
     }else{  
-        res.json({code:1,message:'找不到请求文件'});
+        res.json({code:2,message:'找不到请求文件'});
     }  
   });  
   

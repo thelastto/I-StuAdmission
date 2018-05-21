@@ -8,49 +8,19 @@
             @click="handleAdd()">新建</el-button>
           </el-tooltip>
           <el-button  type="danger" plain icon="el-icon-delete" @click="handleBatchDelete">批量删除</el-button>
-          <!-- <el-button type="success" plain icon="el-icon-document"  
-              @click="dialogFormVisible = true">导入</el-button>
 
-          <el-dialog title="导入" :visible.sync="dialogFormVisible">
-
-            <el-upload class="upload-demo" ref="upload" :on-preview="handlePreview"
-              action="/api/channel/saveChannelFromFile" multiple 
-              :on-remove="handleRemove" :file-list="fileList" :auto-upload="false"
-              :on-success="handleSuccess"
-              accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
-              <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-              <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
-              <div slot="tip" class="el-upload__tip">
-                  注意事项：<br>
-                  1.您上传的表格必须严格按照模板的格式填写，其中<span style="color:red">标红的为必填项</span><br>
-                  2.不按照格式填写或没有填必填项会导致错误<br>
-                  3.若您导入的中介已经存在，则会<span style="color:red">覆盖</span>其之前的资料，导入前请仔细核对<br>
-                  4.若您还未下载模板，请先<a href="/api/download?filename=personTemplate">下载模板</a><br>
-                  5.只能上传xlsx、xls格式的文件
-              </div>
-            </el-upload>
-            <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
-            </div>
-          </el-dialog>
-          
-
-          <a href="/api/student/export" style="display:inline-block;padding-left:10px">
-                <el-button type="success" plain icon="el-icon-document">导出</el-button>
-          </a> -->
 
           <el-form :inline="true"
                      :model="formInline"
                      class="form-inline">
                 <el-form-item label="关键字">
                     <el-input v-model="formInline.keywords"
-                              placeholder="请输入关键词"></el-input>
+                              placeholder="姓名"></el-input>
                 </el-form-item>
 
                 <el-form-item>
                     <el-button type="primary"
-                               @click="onSubmit">查询</el-button>
+                               @click="getData()">查询</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -155,7 +125,7 @@ export default {
         let that = this;
         let param = this.filtr;
         this.loading = true;
-        getChannelList({category:'person',page:this.filtr.page, pageSize:this.filtr.pageSize}).then(res => {
+        getChannelList({category:'person',page:this.filtr.page, pageSize:this.filtr.pageSize,keywords:this.formInline.keywords}).then(res => {
           console.log(res.data);
           if (!res.data.code) {
             that.page.total = res.data.total;

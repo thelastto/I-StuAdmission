@@ -17,7 +17,10 @@ router.post('/getChannelList',function(req,res,next){
         category:req.body.category}).count().exec().then(count=>{
             console.log(count);
             total=count;
-            Channel.find({category:req.body.category}).limit(req.body.pageSize).skip((req.body.page-1)*req.body.pageSize).exec().then(channelList=>{
+            Channel.find({$or : [ //多条件，数组
+                {name : {$regex : reg}},
+                {linkman : {$regex : reg}},
+            ],category:req.body.category}).limit(req.body.pageSize).skip((req.body.page-1)*req.body.pageSize).exec().then(channelList=>{
                  res.json({code:0,message:'success',total:total,channelList:channelList})
              }).catch(err=>{
                  console.log(err)
@@ -45,7 +48,7 @@ router.post('/getChannelDetail',function(req,res,next){
     
     Channel.findOne({_id:req.body.id},function (err, channel){
        if(!channel){
-           res.json({code:1,message:'查询失败'})
+           res.json({code:2,message:'查询失败'})
        }else{
            res.json({code:0,message:'查询成功',channel:channel})
        }
@@ -66,7 +69,7 @@ router.post('/updateChannel',function(req,res,next){
             channel.notes = req.body.channelform.notes;
             channel.save(function (err,doc) {
                 if(!doc){
-                  res.json({code:1,message:'失败，请稍后再试'})
+                  res.json({code:2,message:'失败，请稍后再试'})
                 }else{
                   res.json({code:0,message:'修改成功'})
                 }
@@ -82,7 +85,7 @@ router.post('/updateChannel',function(req,res,next){
                 notes :req.body.channelform.notes,
             }).save(function (err,doc) {
                   if(!doc){
-                    res.json({code:1,message:'失败，请稍后再试'})
+                    res.json({code:2,message:'失败，请稍后再试'})
                   }else{
                     res.json({code:0,message:'添加成功'})
                   }
@@ -102,7 +105,7 @@ router.post('/removeChannel',function(req,res,next){
     
     Channel.remove({_id:req.body.id},function (err){
        if(err){
-           res.json({code:1,message:'删除失败'})
+           res.json({code:2,message:'删除失败'})
        }else{
            res.json({code:0,message:'删除成功'})
        }
@@ -128,7 +131,7 @@ router.post('/batchDeleteChannel',function(req,res,next){
          });
     }
     if(errList.length>0){
-        res.json({code:1,message:'删除完成，其中'+errList+'删除失败'})
+        res.json({code:2,message:'删除完成，其中'+errList+'删除失败'})
     }else{
         res.json({code:0,message:'删除成功'})
     }

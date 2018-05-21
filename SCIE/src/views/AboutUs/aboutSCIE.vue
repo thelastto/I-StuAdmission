@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div  class="about-container">
     <div v-html="content"></div>
   </div>
 </template>
@@ -28,5 +28,7 @@ export default {
 }
 </script>
 <style >
-
+.about-container{
+  padding:20px
+}
 </style>

@@ -14,12 +14,12 @@
                      class="form-inline">
                 <el-form-item label="关键字">
                     <el-input v-model="formInline.keywords"
-                              placeholder="请输入关键词"></el-input>
+                              placeholder="教师号/姓名/职位"></el-input>
                 </el-form-item>
 
                 <el-form-item>
                     <el-button type="primary"
-                               @click="onSubmit">查询</el-button>
+                               @click="getData()">查询</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -93,9 +93,7 @@ export default {
             dialogFormVisible: false,
             fileList: [],
             formInline: {
-                name: '',
-                keywords: '',
-                daterange: ''
+                keywords: ''
             },
             currentPage:1,
             loading: false,
@@ -123,7 +121,7 @@ export default {
         let that = this;
         let param = this.filtr;
         this.loading = true;
-        getTeacherList({id:'',page:this.filtr.page, pageSize:this.filtr.pageSize}).then(res => {
+        getTeacherList({id:'',page:this.filtr.page, pageSize:this.filtr.pageSize,keywords:this.formInline.keywords}).then(res => {
           console.log(res.data);
           if (!res.data.code) {
             that.page.total = res.data.total;

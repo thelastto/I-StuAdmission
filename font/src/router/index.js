@@ -23,7 +23,10 @@ import ContactUs from 'views/StuWebSite/AboutUs/ContactUs/index'
 import ContactUsDetail from 'views/StuWebSite/AboutUs/ContactUs/detail'
 import ContactUsEdit from 'views/StuWebSite/AboutUs/ContactUs/edit'
 import ContactUsList from 'views/StuWebSite/AboutUs/ContactUs/list'
-import News from 'views/StuWebSite/news'
+import News from 'views/StuWebSite/News/index'
+import NewsList from 'views/StuWebSite/News/list'
+import NewsDetail from 'views/StuWebSite/News/detail'
+import NewsEdit from 'views/StuWebSite/News/edit'
 import Education from 'views/StuWebSite/Education/index'
 import Major from 'views/StuWebSite/Education/Major/index'
 import Teacher from 'views/StuWebSite/Education/Teacher/index'
@@ -189,7 +192,24 @@ export const permissionRoutesMap=[{
       name:'news',
       cn:'NEWS',
       meta:{requireRole:[1,2]},
-      component:News
+      component:News,
+      redirect:'/main/stuwebsite/news/list',
+        children:[{
+            path:'/main/stuwebsite/news/detail',
+            name:'newsDetail',
+            meta:{requireRole:[1]},
+            component:NewsDetail,
+          },{
+            path:'/main/stuwebsite/news/edit',
+            name:'newsEdit',
+            meta:{requireRole:[1]},
+            component:NewsEdit,
+          },{
+            path:'/main/stuwebsite/news/list',
+            name:'newsList',
+            meta:{requireRole:[1]},
+            component:NewsList,
+        }]
     }]
   },{
     path: '/main/student',
